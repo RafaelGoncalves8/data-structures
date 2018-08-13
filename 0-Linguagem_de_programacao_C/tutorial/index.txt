@@ -2,3 +2,4 @@
 2 - maratona
 3 - aprovacao
 4 - cebolinha
+5 - caca-palavras
