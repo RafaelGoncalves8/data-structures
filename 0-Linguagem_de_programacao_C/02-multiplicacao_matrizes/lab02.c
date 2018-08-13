@@ -14,8 +14,6 @@
 
 
 void create_permutation_matrix(int p[], int A[][N], int n) {
-    /* cria a matriz de permutacao A a partir do vetor p */
-
     int i, j;
 
     for (i = 0; i < n; i++) {
@@ -31,8 +29,6 @@ void create_permutation_matrix(int p[], int A[][N], int n) {
 
 void print_matrix_multiplication (int A[][N], double B[][N],
                                          int n) {
-    /* calcula e imprime a matriz A*B */
-
     int i, j, k;
     double c;
 
@@ -67,8 +63,10 @@ int main(){
         for (j = 0; j < n; j++)
             scanf("%lf", &B[i][j]);
 
+    /* cria a matriz de permutacao A a partir do vetor p */
     create_permutation_matrix(p, A, n);
 
+    /* calcula e imprime a matriz A*B */
     print_matrix_multiplication(A, B, n);
 
     return 0;
