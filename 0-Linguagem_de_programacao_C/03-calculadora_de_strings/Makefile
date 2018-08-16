@@ -1,4 +1,5 @@
-MAIN = lab02
+
+MAIN = lab03
 
 SRC = $(wildcard *.c)
 OBJ = $(patsubst %.c, %.o, $(SRC))
@@ -24,12 +25,12 @@ testar_tudo: $(MAIN)
 		exit 1 ; \
 	fi ; \
 	for entrada in testes_*/*.in ; do \
+		resultado=$$(echo "$$entrada" | sed -re 's/\.in$$/.res/' ) ; \
 		saida=$$(echo "$$entrada" | sed -re 's/\.in$$/.out/' ) ; \
-		resposta=$$(echo "$$entrada" | sed -re 's/\.in$$/.res/' ) ; \
-		./$(MAIN) < "$$entrada" > "$$saida" ; \
+		./$(MAIN) < $$entrada > $$saida ; \
 		echo ; \
 		echo "Testando $$entrada: " ; \
-		if diff "$$resposta" "$$saida" ;  then \
+		if diff $$resultado $$saida ;  then \
 			echo "OK" ; \
 		else \
 			echo "***********************************"; \

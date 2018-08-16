@@ -26,8 +26,8 @@ void cat(char buffer[], char str[])
 void cmp(char buffer[], char str[])
 {
   /* Flag indicating if buffer has a char different than str */
-  int has_dif = 0;
-  int i;
+  int has_dif_char = 0;
+  int i = 0;
 
   /* Itere o buffer e a string enquanto ambos nao terminam e ainda nao teve
    * caractere diferente
@@ -35,12 +35,12 @@ void cmp(char buffer[], char str[])
   do
   {
     if (buffer[i] != str[i])
-      has_dif = 1;
+      has_dif_char = 1;
     i++;
   }
-  while (buffer[i] != '\0' && str[i] != '\0' && has_dif == 0);
+  while (buffer[i] != '\0' && str[i] != '\0' && has_dif_char == 0);
 
-  if (has_dif == 1)
+  if (has_dif_char == 1)
     printf("DIFERENTE\n");
   else
     printf("IGUAL\n");
@@ -69,7 +69,7 @@ int main()
   buffer[0] = '\0';
 
   /* Leitura da primeira operacao*/
-  scanf("%s ", op);
+  scanf("%s", op);
 
   /* Dado que o problema é fechado nas 4 operacoes citadas no enunciado
    * (CAT, CMP, SUB e END) e analisando-se apenas o segundo caractere
@@ -77,7 +77,7 @@ int main()
    * discernir qual eh a operacao pedida, implementei o lab comparando
    * apenas o segundo caractere da operacao
    */
-  while (op[1] != 'N')     /* Entrar/continuar no laco se operacao nao for END */
+  while (op[1] != 'N')     /* Executa laco se operacao nao for END */
   {
     if (op[1] == 'A')      /* CAT */
     {
@@ -96,7 +96,7 @@ int main()
     }
 
     /* Leitura da proxima operacao */
-    scanf("%s ", op);
+    scanf("%s", op);
   }
 
   return 0;
