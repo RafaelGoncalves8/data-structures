@@ -28,20 +28,20 @@ adicionar_variacao(acao a, double variacao)
 void
 reportar_acao(acao a)
 {
-  double sum = 0;
+  double val = a.investimento;
   int i;
 
   printf("%s ", a.nome);
 
   for (i = 0; i < a.n_variacoes; i++)
-    sum += a.variacoes[i];
+    val += val*a.variacoes[i]/100;
 
-  if (sum > 0)
+  if (val > a.investimento)
   {
-    printf("%.2f GANHO\n", sum);
+    printf("%.2f GANHO\n", val);
   }
   else
   {
-    printf("%.2f PERDA\n", -sum);
+    printf("%.2f PERDA\n", val);
   }
 }
