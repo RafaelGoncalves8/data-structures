@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <strings.h>
 #include "acao.h"
 #include "portfolio.h"
 
@@ -22,26 +23,29 @@ main()
   double investimento_acao, var;
   int i, j, m, n;
 
-  scanf("%s %s ", nome, sobrenome);
+  /* Cria o portfolio. */
+  scanf("%s %s", nome, sobrenome);
 
   p = criar_portfolio(nome, sobrenome);
 
-  scanf("%d ", &n);
+  scanf("%d", &n);
 
+  /* Adiciona acoes no portfolio. */
   for (i = 0; i < n; i++)
   {
-    scanf("%s %lf %n", nome_acao, &investimento_acao, &m);
+    scanf("%s %lf %d", nome_acao, &investimento_acao, &m);
     a = criar_acao(nome_acao, investimento_acao);
 
     for (j = 0; j < m; j++)
     {
       scanf("%lf", &var);
-      adicionar_variacao(a, var);
+      a = adicionar_variacao(a, var);
     }
 
-    adicionar_acao(p, a);
+    p = adicionar_acao(p, a);
   }
 
+ /* Imprime relatorio. */
  criar_relatorio(p);
 
  return 0; 
