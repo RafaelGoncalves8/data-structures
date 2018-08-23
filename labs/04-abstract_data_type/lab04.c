@@ -26,16 +26,16 @@ main()
 
   p = criar_portfolio(nome, sobrenome);
 
-  scanf("%d ", n);
+  scanf("%d ", &n);
 
   for (i = 0; i < n; i++)
   {
-    scanf("%s %lf %n", nome_acao, investimento_acao, m);
+    scanf("%s %lf %n", nome_acao, &investimento_acao, &m);
     a = criar_acao(nome_acao, investimento_acao);
 
     for (j = 0; j < m; j++)
     {
-      scanf("%lf", var);
+      scanf("%lf", &var);
       adicionar_variacao(a, var);
     }
 

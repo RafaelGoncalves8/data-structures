@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "acao.h"
 
 /* Cria uma nova acao. */
@@ -6,7 +7,7 @@ acao
 criar_acao(char *nome, double investimento)
 {
   acao a;
-  a.nome = nome;
+  strncpy(a.nome, nome, MAX_SIZE_NAME);
   a.investimento = investimento;
   a.n_variacoes = 0;
 
@@ -17,7 +18,7 @@ criar_acao(char *nome, double investimento)
 acao
 adicionar_variacao(acao a, double variacao)
 {
-  a.variacao[a.n_variacoes] = variacao;
+  a.variacoes[a.n_variacoes] = variacao;
   a.n_variacoes++;
 
   return a;
