@@ -2,7 +2,9 @@
  * Lab 04 - Tipo Abstrato de Dado
  * Rafael Goncalves
  *
- * O objetivo do lab
+ * O objetivo do lab eh implementar cliente e implementacao dos tipos abstratos
+ * de dados portfolio e acao visando implementar funcoes para ler acoes e
+ * variacoes e imprimir um relatorio sobre o portfolio criado.
  */
 
 #include <stdio.h>
@@ -30,7 +32,7 @@ main()
 
   scanf("%d", &n);
 
-  /* Adiciona acoes no portfolio. */
+  /* Cria e adiciona acoes no portfolio. */
   for (i = 0; i < n; i++)
   {
     scanf("%s %lf %d", nome_acao, &investimento_acao, &m);
