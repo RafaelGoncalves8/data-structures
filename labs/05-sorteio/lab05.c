@@ -26,13 +26,13 @@ Entry;
  * Entradas: registro fonte a, registro destino b, tamanho n.
  */
 void
-copy_entries(* Entry a, * Entry b, n)
+copy_entries(Entry * a, Entry * b, int n)
 {
   int i;
   for (i = 0; i < n ; i++)
   {
-    strcpy(b[i].name, a[i].name, n);
-    b[i].num = [i].num;
+    strcpy(b[i].name, a[i].name);
+    b[i].num = a[i].num;
   }
 }
 
@@ -46,7 +46,7 @@ copy_entries(* Entry a, * Entry b, n)
  * TODO: check if new_entries = NULL and send error code.
  */
 Entry *
-double_entries(Entry * entries, n)
+double_entries(Entry * entries, int n)
 {
   Entry * new_entries;
 
@@ -59,10 +59,11 @@ double_entries(Entry * entries, n)
   return new_entries;
 }
 
+void print_winner(Entry * entries, int k) {}
+
 int
 main()
 {
-  int i = 0;          /* Contador. */
   int n;              /* Numero de registros. */
   int k;              /* Numero sorteado. */
   int num;            /* Numero em cada linha da entrada. */
@@ -84,12 +85,12 @@ main()
   /* Leitura das entradas e criacao dos registros. */
   scanf("%s %n", name, &num);
 
-  while (!strcmp(name, "fim\0"))
+  while (strcmp(name, "fim\0"))
   {
     scanf("%s %n", name, &num);
     n++;
 
-    if !spaces_left
+    if (!spaces_left)
       entries = double_entries(entries, n);
   }
 
