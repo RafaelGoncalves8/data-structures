@@ -38,7 +38,7 @@ main()
 
   for (i = 0; i < p; i++) /* Professores. */
   {
-    scanf("%s %s %f %s", p_nome, p_sobrenome, &val, disciplina);
+    scanf("%s %s %lf %s", p_nome, p_sobrenome, &val, disciplina);
     professores[i] = criarProfessor(p_nome, p_sobrenome, val, disciplina);
   }
 
@@ -54,7 +54,7 @@ main()
 
     for (j = 0; j < n; j++) /* Disciplinas de cada aluno. */
     {
-      scanf("%s %f", disciplina, nota);
+      scanf("%s %lf", disciplina, &nota);
 
       adicionarDisciplina(alunos[i], disciplina, nota);
     }
@@ -65,7 +65,7 @@ main()
   {
     obterNotasExtremas(alunos, a, professores[i]->disciplina,
                        &nota_min, &nota_max);
-    reajusteSalario(professores[i], nota_min+nota_max/2);
+    reajusteSalario(professores[i], nota_min+nota_max/2.0);
     imprimirProfessor(professores[i]);
     destruirProfessor(professores[i]); /* Liberar memoria do registro. */
   }

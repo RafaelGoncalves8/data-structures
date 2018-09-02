@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include "universidade.h"
 
@@ -23,7 +24,7 @@ criarProfessor(char nome[], char sobrenome[], double salario,
   strcpy(p->nome, nome);
   strcpy(p->sobrenome, sobrenome);
   p->salario = salario;
-  strcpy(p->disciplina);
+  strcpy(p->disciplina, disciplina);
 
   return p;
 }
@@ -55,8 +56,8 @@ criarAluno(char nome[], char sobrenome[])
 
   a = (p_aluno) malloc(sizeof(Aluno));
 
-  a->nome = nome;
-  a->sobrenome = sobrenome;
+  strcpy(a->nome, nome);
+  strcpy(a->sobrenome, sobrenome);
   a->qtd_disciplinas = 0;
 
   return a;
@@ -105,7 +106,11 @@ void
 obterNotasExtremas(p_aluno alunos[], int qtd_alunos, char disciplina[],
                    double *nota_min, double *nota_max)
 {
-  int i;
+  int i, j; /* Indexadores para os lacos for. */
+
+  /* Valor inicial o pior caso possível. */
+  *nota_min = 10;
+  *nota_max = 0;
 
   for (i = 0; i < qtd_alunos; i++)
   {
@@ -113,8 +118,10 @@ obterNotasExtremas(p_aluno alunos[], int qtd_alunos, char disciplina[],
     {
       if (!strcmp(alunos[i]->disciplinas[j], disciplina))
       {
-
-
+        if (alunos[i]->notas[j] <= *nota_min)
+          nota_min = &(alunos[i]->notas[j]);
+        if (alunos[i]->notas[j] >= *nota_max)
+          nota_max = &(alunos[i]->notas[j]);
       }
     }
   }
@@ -130,7 +137,17 @@ obterNotasExtremas(p_aluno alunos[], int qtd_alunos, char disciplina[],
 void
 reajusteSalario(p_professor professor, double media_notas)
 {
-  /* TODO */
+  double val = 0; /* Porcentagem de aumento do salario. */
+
+  if (media_notas == 10.0)
+    val = 0.15;
+  else if (media_notas >= 9.0)
+    val = 0.10;
+  else if (media_notas >= 8.5)
+    val = 0.05;
+
+  if (val)
+    professor->salario +=  professor->salario * val;
 }
 
 /*
@@ -141,6 +158,7 @@ reajusteSalario(p_professor professor, double media_notas)
 void
 imprimirProfessor(p_professor professor)
 {
-  /* TODO */
+  printf("%s %s %.2f\n", professor->nome, professor->sobrenome,
+          professor->salario);
 }
 
