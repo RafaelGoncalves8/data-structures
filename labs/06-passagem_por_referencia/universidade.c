@@ -119,9 +119,9 @@ obterNotasExtremas(p_aluno alunos[], int qtd_alunos, char disciplina[],
       if (!strcmp(alunos[i]->disciplinas[j], disciplina))
       {
         if (alunos[i]->notas[j] <= *nota_min)
-          nota_min = &(alunos[i]->notas[j]);
+          *nota_min = (alunos[i]->notas[j]);
         if (alunos[i]->notas[j] >= *nota_max)
-          nota_max = &(alunos[i]->notas[j]);
+          *nota_max = (alunos[i]->notas[j]);
       }
     }
   }
@@ -139,15 +139,15 @@ reajusteSalario(p_professor professor, double media_notas)
 {
   double val = 0; /* Porcentagem de aumento do salario. */
 
-  if (media_notas == 10.0)
+  if (media_notas == 10)
     val = 0.15;
-  else if (media_notas >= 9.0)
+  else if (media_notas >= 9)
     val = 0.10;
   else if (media_notas >= 8.5)
     val = 0.05;
 
   if (val)
-    professor->salario +=  professor->salario * val;
+    professor->salario +=  (professor->salario) * val;
 }
 
 /*
