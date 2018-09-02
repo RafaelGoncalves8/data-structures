@@ -14,15 +14,16 @@ main()
 {
   int i, j; /* Indices para os lacos for. */
 
-  p_professor * professores; /* Vetor de registros de professores. */
+  p_professor * professores; /* Vetor de ponteiros para registros
+                                de professores. */
   int p;         /* Numero de elementos no vetor professores. */
 
-  p_aluno * alunos; /* Vetor de registros de alunos.*/
+  p_aluno * alunos; /* Vetor de ponteiros para registros de alunos.*/
   int a;     /* Numero de elementos no vetor alunos. */
 
   /* Variaveis temporarias para criacao dos registros. */
-  char p_nome[MAX_NOME], p_sobrenome[MAX_NOME];
-  char a_nome[MAX_NOME], a_sobrenome[MAX_NOME];
+  char prof_nome[MAX_NOME], prof_sobrenome[MAX_NOME];
+  char al_nome[MAX_NOME], al_sobrenome[MAX_NOME];
   char disciplina[MAX_CODIGO];
   int n;     /* Numero de disciplinas que o aluno esta matriculado. */
   double val; /* Valor do salario do professor. */
@@ -38,8 +39,8 @@ main()
 
   for (i = 0; i < p; i++) /* Professores. */
   {
-    scanf("%s %s %lf %s", p_nome, p_sobrenome, &val, disciplina);
-    professores[i] = criarProfessor(p_nome, p_sobrenome, val, disciplina);
+    scanf("%s %s %lf %s", prof_nome, prof_sobrenome, &val, disciplina);
+    professores[i] = criarProfessor(prof_nome, prof_sobrenome, val, disciplina);
   }
 
   scanf("%d", &a);
@@ -48,9 +49,9 @@ main()
 
   for (i = 0; i < a; i++) /* Alunos. */
   {
-    scanf("%s %s %d", a_nome, a_sobrenome, &n);
+    scanf("%s %s %d", al_nome, al_sobrenome, &n);
 
-    alunos[i] = criarAluno(a_nome, a_sobrenome);
+    alunos[i] = criarAluno(al_nome, al_sobrenome);
 
     for (j = 0; j < n; j++) /* Disciplinas de cada aluno. */
     {
@@ -65,7 +66,7 @@ main()
   {
     obterNotasExtremas(alunos, a, professores[i]->disciplina,
                        &nota_min, &nota_max);
-    reajusteSalario(professores[i], nota_min+nota_max/2.0);
+    reajusteSalario(professores[i], (nota_min + nota_max)/2.0);
     imprimirProfessor(professores[i]);
     destruirProfessor(professores[i]); /* Liberar memoria do registro. */
   }

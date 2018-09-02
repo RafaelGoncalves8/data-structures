@@ -109,8 +109,8 @@ obterNotasExtremas(p_aluno alunos[], int qtd_alunos, char disciplina[],
   int i, j; /* Indexadores para os lacos for. */
 
   /* Valor inicial o pior caso possível. */
-  *nota_min = 10;
-  *nota_max = 0;
+  *nota_min = 10.0;
+  *nota_max = 0.0;
 
   for (i = 0; i < qtd_alunos; i++)
   {
