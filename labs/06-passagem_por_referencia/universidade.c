@@ -112,10 +112,11 @@ obterNotasExtremas(p_aluno alunos[], int qtd_alunos, char disciplina[],
   *nota_min = 10.0;
   *nota_max = 0.0;
 
-  for (i = 0; i < qtd_alunos; i++)
+  for (i = 0; i < qtd_alunos; i++) /* Para cada aluno. */
   {
-    for (j = 0; j < alunos[i]->qtd_disciplinas; j++)
+    for (j = 0; j < alunos[i]->qtd_disciplinas; j++) /* Para cada disciplina. */
     {
+      /* Se for a mesma disciplina passada por parametro. */
       if (!strcmp(alunos[i]->disciplinas[j], disciplina))
       {
         if (alunos[i]->notas[j] <= *nota_min)

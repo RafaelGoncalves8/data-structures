@@ -2,7 +2,12 @@
  * Lab 06
  * Rafael Goncalves
  *
- * Objetivo:
+ * Objetivo: Ler uma lista de professores com respectivos nome, materia e
+ * salario e armazenar em registros. Ler alunos com respectivos nome, sobrenome,
+ * quantidade de materias e as respectivas materias e notas desse aluno e
+ * armazenar em registros. Implementar as funcoes em universidade.h que visam
+ * criar os registros e calcular o novo salario de cada professor baseado nas
+ * notas dos alunos em sua materia.
  */
 
 #include <stdio.h>
