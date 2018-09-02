@@ -2,7 +2,10 @@
  * Lab 05
  * Rafael Gonçalves
  *
- * Objetivo:
+ * Objetivo: Ler uma quantidade indeterminada de registros contendo
+ * nome e numero de telefone dos participantes de um sorteio. Ordenar
+ * o vetor em ordem crescente de numero de telefone. Imprimir o
+ * vencedor do sorteio que é o k-esimo elemento no vetor ordenado.
  */
 
 #include <stdio.h>
@@ -12,7 +15,7 @@
 #define MAX_STR 30
 #define INITIAL_SPACES 4
 #define NUM_ERR_OUT_OF_MEM -1
-#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria."
+#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
 
 /* Registro com 2 campos: nome e numero de telefone. */
 typedef struct Entry_Struct
@@ -23,9 +26,10 @@ typedef struct Entry_Struct
 Entry;
 
 /*
- * Copia as n entradas do registro a para o registro b.
+ * Copia as n entradas do vetor de registros a para o vetor de registros b.
  *
- * Entradas: registro fonte a, registro destino b, tamanho n.
+ * Entradas: vetor de registros fonte a, vetor de registros destino b,
+ *           numero de elementos a serem copiados n.
  */
 void
 copy_entries(Entry * a, Entry * b, int n)
@@ -39,9 +43,11 @@ copy_entries(Entry * a, Entry * b, int n)
 }
 
 /* 
- * Cria um novo registro com o dobro de tamanho alocado na memória.
+ * Cria um novo registro com o dobro de tamanho alocado na memória e copia os
+ * elementos do registro antigo.
  *
- * Entradas: registro antigo, tamanho atual n.
+ * Entradas: registro antigo, tamanho atual,
+ *           numero de elementos no registro antigo n.
  *
  * Saida: novo registro com o dobro de tamanho (2n).
  */
@@ -54,7 +60,7 @@ double_entries(Entry * entries, int n)
    * Aloca a memoria para o vetor e checa se teve espaco,
    * senao imprime erro.
    */
-  new_entries = malloc(2*n * sizeof(Entry));
+  new_entries = (Entry *) malloc(2 * n * sizeof(Entry));
   if (new_entries == NULL)
   {
     printf(STR_ERR_OUT_OF_MEM);
@@ -70,9 +76,13 @@ double_entries(Entry * entries, int n)
 }
 
 /*
+ * Ordena os elementos de um vetor de elementos do tipo Entry por
+ * ordem crescente do numero de telefone (num).
  *
+ * Entradas: o ponteiro para Entry de nome entries e o numero de elementos n
  */
-void bubble_sort(Entry * entries, int n)
+void 
+bubble_sort(Entry * entries, int n)
 {
   /*
    * Variaveis para alocacao temporaria de valores para a troca de posicao dos
@@ -87,9 +97,9 @@ void bubble_sort(Entry * entries, int n)
   do
   {
     swapped = 0;
-    for (i= 0; i < n - 2; i++)
+    for (i= 0; i < n - 1; i++)
     {
-      if (entries[i].num < entries[i+1].num)
+      if (entries[i+1].num < entries[i].num)
       {
         /* Troca entre os elemento i e i+1. */
         tmp_num = entries[i].num;
@@ -107,11 +117,6 @@ void bubble_sort(Entry * entries, int n)
 }
 
 
-
-void print_winner(Entry * entries, int k)
-{
-}
-
 int
 main()
 {
@@ -123,7 +128,7 @@ main()
   int spaces_left;    /* Entradas disponíveis no vetor de registros */
 
   /* Inicializacao do vetor de registros com 2 espacos. */
-  entries = (Entry *) malloc(2 * sizeof(Entry));
+  entries = (Entry *) malloc(INITIAL_SPACES * sizeof(Entry));
   if (entries == NULL)
   {
     printf(STR_ERR_OUT_OF_MEM);
@@ -131,27 +136,35 @@ main()
   }
 
   spaces_left = INITIAL_SPACES;
-  n = spaces_left;
+  n = 0;
 
   /* Leitura das entradas e criacao dos registros. */
-  scanf("%s %n", name, &num);
+  scanf("%s %d", name, &num);
 
   while (strcmp(name, "fim\0"))
   {
-    scanf("%s %n", name, &num);
+    entries[n].num = num;
+    strcpy(entries[n].name, name);
     n++;
+    spaces_left--;
 
+    scanf("%s %d", name, &num);
+
+    /* Se necessario, dobre o tamanho do vetor de registros. */
     if (!spaces_left)
+    {
       entries = double_entries(entries, n);
+      spaces_left = n;
+    }
   }
 
-  scanf("%d", &k);
+  k = num;
 
   /* Ordenar vetor de structs. */
   bubble_sort(entries, n);
 
   /* Imprime o vencedor. */
-  print_winner(entries, k);
+  printf("%s %d\n", entries[k-1].name, entries[k-1].num);
 
   free(entries);
 
