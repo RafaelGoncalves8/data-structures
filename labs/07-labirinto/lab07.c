@@ -2,7 +2,9 @@
  * Lab 07
  * Rafael Goncalves
  *
- * Objetivo: 
+ * Objetivo: Implementar um algoritimo de backtracking para achar a solucao de
+ * um labirinto representado por uma matriz de caracteres'X' (posicoes nao 
+ * validas) e 'O' (posicoes validas).
  */
 
 #include <stdlib.h>
@@ -53,7 +55,7 @@ solve_maze(char * * m, char * * ans, int x, int y, int ls, int cs, int lt, int c
         || solve_maze(m, ans, x+1, y, ls, cs, lt, ct)
         || solve_maze(m, ans, x, y+1, ls, cs, lt, ct);
 
-    if (!val)
+    if (!val) /* Nenhum caminho a partir dessa posicao encontrou solucao. */
       ans[x][y] = ' ';
 
     return val;
