@@ -29,9 +29,10 @@
 int
 solve_maze(char * * m, char * * ans, int x, int y, int ls, int cs, int lt, int ct)
 {
+  int val; /* Valor de retorno: 1 se achou solucao, 0 caso contrario. */
+
   if (x == ls && y == cs) /* Chegou na saida. */
   {
-    printf("ganhei\n");
     ans[x][y] = '*';
     return 1;
   }
@@ -39,19 +40,23 @@ solve_maze(char * * m, char * * ans, int x, int y, int ls, int cs, int lt, int c
            || y < 0
            || x >= lt
            || y >= ct
+           || ans[x][y] == '*'
            || m[x][y] == 'X') /* Nao eh posicao valida. */
   {
-    printf("posicao nao permitida\n");
     return 0;
   }
   else  /* Eh uma posicao valida. */
   {
-    printf("posicao permitida\n");
     ans[x][y] = '*';
-    return solve_maze(m, ans, x-1, y, ls, cs, lt, ct)
+    val = solve_maze(m, ans, x-1, y, ls, cs, lt, ct)
         || solve_maze(m, ans, x, y-1, ls, cs, lt, ct)
         || solve_maze(m, ans, x+1, y, ls, cs, lt, ct)
         || solve_maze(m, ans, x, y+1, ls, cs, lt, ct);
+
+    if (!val)
+      ans[x][y] = ' ';
+
+    return val;
   }
 }
 
@@ -119,7 +124,7 @@ main()
   for (i = 0; i < lt; i++)
   {
     for (j = 0; j < ct - 1; j++)
-      printf("%c ", ans[i][j]);
+      printf("%c", ans[i][j]);
     printf("%c\n", ans[i][j]);
   }
 
