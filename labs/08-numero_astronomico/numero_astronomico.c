@@ -12,7 +12,7 @@ new_dist(p_dist dist)
 p_dist
 add_tail_dist(p_dist dist, char c)
 {
-  tmp = (LinkedList *) malloc(sizeof(LinkedList));
+  tmp = (p_node) malloc(sizeof(Node));
   dist->tail->val = c;
   dist->tail->next->prev = tmp;
   dist->tail = tmp;
@@ -26,7 +26,7 @@ add_tail_dist(p_dist dist, char c)
 p_dist
 add_head_dist(p_dist dist, char c)
 {
-  tmp = (LinkedList *) malloc(sizeof(LinkedList));
+  tmp = (p_node) malloc(sizeof(Node));
   dist->head->val = c;
   dist->head->prev->next = tmp;
   dist->head = tmp;
@@ -40,7 +40,7 @@ add_head_dist(p_dist dist, char c)
 p_dist
 add_dist(p_dist d1, p_dist d2)
 {
-  LinkedList * p, q;
+  p_node p, q;
   int val, overflow;
   p = d1->tail;
   q = d2->tail;
@@ -106,8 +106,9 @@ add_dist(p_dist d1, p_dist d2)
 p_dist
 destroy_dist(p_dist dist)
 {
-  LinkedList * p, tmp;
+  p_node p, tmp;
   p = dist->tail;
+
   while (p != NULL)
   {
     tmp = p;

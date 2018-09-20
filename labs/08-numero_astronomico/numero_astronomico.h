@@ -1,15 +1,17 @@
-typedef struct LinkedListStruct 
+typedef struct NodeStruct 
 {
-  struct LinkedListStruct * next;
-  struct LinkedListStruct * prev;
+  struct NodeStruct * next;
+  struct NodeStruct * prev;
   char val;
 }
-LinkedList;
+Node;
+
+typedef Node * p_node;
 
 typedef struct DistStruct
 {
-  LinkedList * head;
-  LinkedList * tail;
+  p_node head;
+  p_node tail;
 }
 Dist;
 
