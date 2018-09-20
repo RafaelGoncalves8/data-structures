@@ -19,9 +19,13 @@ typedef Dist * p_dist;
 p_dist
 new_dist(p_dist dist);
 
-/* Adiciona elemento (digito) no inicio da lista ligada. */
+/* Adiciona elemento (digito) no fim (tail) da lista ligada. */
 p_dist
-add_digit_dist(p_dist dist, char c);
+add_tail_dist(p_dist dist, char c);
+
+/* Adiciona elemento (digito) no inicio (head) da lista ligada. */
+p_dist
+add_head_dist(p_dist dist, char c);
 
 /* Soma duas distancias (soma listas ligadas elemento a elemento). */
 p_dist
