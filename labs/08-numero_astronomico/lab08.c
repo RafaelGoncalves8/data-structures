@@ -2,8 +2,9 @@
  * Lab 08
  * Rafael Gonçalves
  *
- * Objetivo:
- *
+ * Objetivo: Representar numeros inteiros muito grandes usando listas ligadas
+ * e implementar a operacao de soma entre esse novo tipo de dado que chamei de
+ * struct DistStruct na interface 'numero_astronomico.h'.
  */
 
 #include "numero_astronomico.h"
@@ -13,44 +14,46 @@
 int
 main()
 {
-  char c; /* Caractere de entrada. */
-  char d; /* Digito de cada distancia a ser somada. */
+  char c; /* Caracteres de entrada. */
 
   p_dist dist;     /* Struct representando a soma das distancias. */
-  p_dist new_dist; /* Struct que guarda temporariamente cada distancia
+  p_dist tmp_dist; /* Struct que guarda temporariamente cada distancia
                     a ser somada */
 
   dist = new_dist();
-  scanf("%c ", &c);
+  tmp_dist = new_dist();
+  scanf(" %c", &c);
   while (c == '+')
   {
     /* (Re)inicializa a lista ligada como lista vazia. */
-    new_dist = new_dist();
+    tmp_dist = new_dist();
 
     /* Ignora zeros à esquerda. */
-    scanf("%c ", c);
+    scanf(" %c", &c);
     while (c == '0')
-      scanf("%c ", c);
+      scanf(" %c", &c);
 
     /* Armazena em new_dist cada distancia a ser somada. */
-    while (c != '#' && c != '+') 
+    while (c != '+' && c != '#') 
     {
-      new_dist = add_digit_dist(new_dist, c);
-
-      scanf("%c ", &c);
+      tmp_dist = add_tail_dist(tmp_dist, c);
+      scanf(" %c", &c);
     }
 
-    /* Soma a distancia armazenada e imprime distancia acumulada. */
-    dist = add_dist(dist, new_list);
+    /*
+     * Soma a distancia armazenada, destroi lista temporaria
+     * e imprime distancia acumulada.
+     */
+    dist = add_dist(dist, tmp_dist);
+    tmp_dist = destroy_dist(tmp_dist);
     print_dist(dist);
   }
 
   /* Libera memoria alocada dinamicamente. */
   dist = destroy_dist(dist);
-  new_dist = destroy_dist(new_dist);
 
   free(dist);
-  free(new_dist);
+  free(tmp_dist);
 
   return 0;
 }

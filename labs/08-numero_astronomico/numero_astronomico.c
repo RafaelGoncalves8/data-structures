@@ -1,7 +1,48 @@
+#include "numero_astronomico.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+#define NUM_ERR_OUT_OF_MEM -1
+#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
+
+/* Aloca memoria para ponteiro para Node. */
+p_node
+alloc_node()
+{
+  p_node node;
+  node = (p_node) malloc(sizeof(Node));
+  if (node == NULL)
+  {
+    printf(STR_ERR_OUT_OF_MEM);
+    exit(NUM_ERR_OUT_OF_MEM);
+  }
+
+  return node;
+}
+
+/* Aloca memoria para ponteiro para Dist. */
+p_dist
+alloc_dist()
+{
+  p_dist dist;
+  dist = (p_dist) malloc(sizeof(Dist));
+  if (dist == NULL)
+  {
+    printf(STR_ERR_OUT_OF_MEM);
+    exit(NUM_ERR_OUT_OF_MEM);
+  }
+
+  return dist;
+}
+
 /* Cria lista ligada vazia. */
 p_dist
-new_dist(p_dist dist)
+new_dist()
 {
+  p_dist dist;
+
+  dist = alloc_dist();
+
   dist->head = NULL;
   dist->tail = NULL;
 
@@ -12,12 +53,21 @@ new_dist(p_dist dist)
 p_dist
 add_tail_dist(p_dist dist, char c)
 {
-  tmp = (p_node) malloc(sizeof(Node));
-  dist->tail->val = c;
-  dist->tail->next->prev = tmp;
-  dist->tail = tmp;
+  p_node tmp;
+
+  tmp = alloc_node();
+  tmp->val = c;
   if (dist->head == NULL)
+  {
+    dist->tail = tmp;
     dist->head = tmp;
+  }
+  else
+  {
+    tmp->prev = dist->tail;
+    dist->tail = tmp;
+    dist->tail->prev->next = tmp;
+  }
 
   return dist;
 }
@@ -26,12 +76,21 @@ add_tail_dist(p_dist dist, char c)
 p_dist
 add_head_dist(p_dist dist, char c)
 {
-  tmp = (p_node) malloc(sizeof(Node));
-  dist->head->val = c;
-  dist->head->prev->next = tmp;
-  dist->head = tmp;
+  p_node tmp;
+
+  tmp = alloc_node();
+  tmp->val = c;
   if (dist->tail == NULL)
+  {
+    dist->head = tmp;
     dist->tail = tmp;
+  }
+  else
+  {
+    tmp->next = dist->head;
+    dist->head = tmp;
+    dist->head->next->prev = tmp;
+  }
 
   return dist;
 }
@@ -40,10 +99,14 @@ add_head_dist(p_dist dist, char c)
 p_dist
 add_dist(p_dist d1, p_dist d2)
 {
+  p_dist ans;
   p_node p, q;
   int val, overflow;
   p = d1->tail;
   q = d2->tail;
+
+  ans = alloc_dist();
+  ans = new_dist();
 
   overflow = 0;
   while (p != NULL && q != NULL)
@@ -59,6 +122,8 @@ add_dist(p_dist d1, p_dist d2)
       overflow = 0;
     }
     ans = add_head_dist(ans, val + '0');
+    p = p->prev;
+    q = q->prev;
   }
 
   if (p == NULL)
@@ -76,6 +141,7 @@ add_dist(p_dist d1, p_dist d2)
         overflow = 0;
       }
       ans = add_head_dist(ans, val + '0');
+      q = q->prev;
     }
   }
   else /* q == NULL. */
@@ -93,8 +159,12 @@ add_dist(p_dist d1, p_dist d2)
         overflow = 0;
       }
       ans = add_head_dist(ans, val + '0');
+      p = p->prev;
     }
   }
+
+  if (overflow == 1)
+    ans = add_head_dist(ans, overflow + '0');
 
   free(p);
   free(q);
@@ -102,24 +172,41 @@ add_dist(p_dist d1, p_dist d2)
   return ans;
 }
 
-/* Remove todos os elementos da lista ligada e devolve lista vazia. */
-p_dist
-destroy_dist(p_dist dist)
+/* Imprime numero astronomico. */
+void
+print_dist(p_dist dist)
 {
-  p_node p, tmp;
-  p = dist->tail;
+  p_node p;
+  p = alloc_node();
+  p = dist->head;
 
   while (p != NULL)
   {
-    tmp = p;
-    free(tmp);
-    p = p->prev;
+    printf("%c", p->val);
+    p = p->next;
   }
 
-  free(dist->head);
-  free(dist->tail);
-  free(p);
-  free(tmp);
+  printf("\n");
+}
+
+/* Remove todos os elementos da lista ligada, libera memoria de dist  e devolve NULL. */
+p_dist
+destroy_dist(p_dist dist)
+{
+  p_node p;
+  p_node next_p;
+
+  p = dist->head;
+
+  while (p != NULL)
+  {
+    next_p = p->next;
+    free(p);
+    p = next_p;
+  }
+
+  dist->head = NULL;
+  dist->tail = NULL;
 
   return dist;
 }
