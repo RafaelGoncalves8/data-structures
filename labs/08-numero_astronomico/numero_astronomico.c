@@ -57,8 +57,10 @@ add_tail_dist(p_dist dist, char c)
 
   tmp = alloc_node();
   tmp->val = c;
+  tmp->next = NULL;
   if (dist->head == NULL)
   {
+    tmp->prev = NULL;
     dist->tail = tmp;
     dist->head = tmp;
   }
@@ -80,8 +82,10 @@ add_head_dist(p_dist dist, char c)
 
   tmp = alloc_node();
   tmp->val = c;
+  tmp->prev = NULL;
   if (dist->tail == NULL)
   {
+    tmp->next = NULL;
     dist->head = tmp;
     dist->tail = tmp;
   }
@@ -168,6 +172,9 @@ add_dist(p_dist d1, p_dist d2)
 
   free(p);
   free(q);
+
+  d1 = destroy_dist(d1);
+  free(d1);
 
   return ans;
 }

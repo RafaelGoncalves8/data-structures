@@ -25,9 +25,6 @@ main()
   scanf(" %c", &c);
   while (c == '+')
   {
-    /* (Re)inicializa a lista ligada como lista vazia. */
-    tmp_dist = new_dist();
-
     /* Ignora zeros à esquerda. */
     scanf(" %c", &c);
     while (c == '0')
