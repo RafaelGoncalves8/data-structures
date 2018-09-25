@@ -35,7 +35,7 @@ alloc_dist()
   return dist;
 }
 
-/* Cria lista ligada vazia. */
+/* Cria dist vazia. */
 p_dist
 new_dist()
 {
@@ -53,22 +53,23 @@ new_dist()
 p_dist
 add_tail_dist(p_dist dist, char c)
 {
-  p_node tmp;
+  p_node new; 
 
-  tmp = alloc_node();
-  tmp->val = c;
-  tmp->next = NULL;
+  new = alloc_node();
+  new->val = c;
+  new->next = NULL;
+
   if (dist->head == NULL)
   {
-    tmp->prev = NULL;
-    dist->tail = tmp;
-    dist->head = tmp;
+    new->prev = NULL;
+    dist->tail = new;
+    dist->head = new;
   }
   else
   {
-    tmp->prev = dist->tail;
-    dist->tail = tmp;
-    dist->tail->prev->next = tmp;
+    new->prev = dist->tail;
+    dist->tail->next = new;
+    dist->tail = new;
   }
 
   return dist;
@@ -78,22 +79,23 @@ add_tail_dist(p_dist dist, char c)
 p_dist
 add_head_dist(p_dist dist, char c)
 {
-  p_node tmp;
+  p_node new;
 
-  tmp = alloc_node();
-  tmp->val = c;
-  tmp->prev = NULL;
+  new = alloc_node();
+  new->val = c;
+  new->prev = NULL;
+
   if (dist->tail == NULL)
   {
-    tmp->next = NULL;
-    dist->head = tmp;
-    dist->tail = tmp;
+    new->next = NULL;
+    dist->head = new;
+    dist->tail = new;
   }
   else
   {
-    tmp->next = dist->head;
-    dist->head = tmp;
-    dist->head->next->prev = tmp;
+    new->next = dist->head;
+    dist->head->prev = new;
+    dist->head = new;
   }
 
   return dist;
@@ -103,9 +105,11 @@ add_head_dist(p_dist dist, char c)
 p_dist
 add_dist(p_dist d1, p_dist d2)
 {
-  p_dist ans;
-  p_node p, q;
-  int val, overflow;
+  p_dist ans;    /* Nova dist que sera a soma de d1 e d2. */
+  p_node p, q;   /* Posicao de d1 e d2, respectivamente. */
+  int val;       /* Valor de cada elemento de ans. */
+  int  overflow; /* Flag de overflow da soma. */
+
   p = d1->tail;
   q = d2->tail;
 
@@ -113,7 +117,7 @@ add_dist(p_dist d1, p_dist d2)
   ans = new_dist();
 
   overflow = 0;
-  while (p != NULL && q != NULL)
+  while (p != NULL && q != NULL) /* Enquanto ha elemento em d1 e d2. */
   {
     val = (p->val - '0') + (q->val - '0') + overflow;
     if (val >= 10)
@@ -130,7 +134,7 @@ add_dist(p_dist d1, p_dist d2)
     q = q->prev;
   }
 
-  if (p == NULL)
+  if (p == NULL) /* Se nao ha elemento em d1. */
   {
     while (q != NULL)
     {
@@ -148,7 +152,7 @@ add_dist(p_dist d1, p_dist d2)
       q = q->prev;
     }
   }
-  else /* q == NULL. */
+  else /* q == NULL. Nao ha elemento em d2. */
   {
     while (p != NULL)
     {
@@ -184,7 +188,7 @@ void
 print_dist(p_dist dist)
 {
   p_node p;
-  p = alloc_node();
+
   p = dist->head;
 
   while (p != NULL)
@@ -192,7 +196,6 @@ print_dist(p_dist dist)
     printf("%c", p->val);
     p = p->next;
   }
-
   printf("\n");
 }
 

@@ -16,12 +16,13 @@ main()
 {
   char c; /* Caracteres de entrada. */
 
-  p_dist dist;     /* Struct representando a soma das distancias. */
-  p_dist tmp_dist; /* Struct que guarda temporariamente cada distancia
-                    a ser somada */
+  p_dist dist;     /* Acumulador, guarda a soma das distancias. */
+  p_dist tmp_dist; /* Guarda temporariamente cada distancia a ser somada. */
 
+  /* Inicializacao. */
   dist = new_dist();
   tmp_dist = new_dist();
+
   scanf(" %c", &c);
   while (c == '+')
   {
@@ -37,18 +38,13 @@ main()
       scanf(" %c", &c);
     }
 
-    /*
-     * Soma a distancia armazenada, destroi lista temporaria
-     * e imprime distancia acumulada.
-     */
-    dist = add_dist(dist, tmp_dist);
-    tmp_dist = destroy_dist(tmp_dist);
-    print_dist(dist);
+    dist = add_dist(dist, tmp_dist);   /* Soma e armazena no acumulador. */
+    tmp_dist = destroy_dist(tmp_dist); /* Destroi distancia temporaria. */
+    print_dist(dist);                  /* Imprime numero no acumulador. */
   }
 
   /* Libera memoria alocada dinamicamente. */
   dist = destroy_dist(dist);
-
   free(dist);
   free(tmp_dist);
 

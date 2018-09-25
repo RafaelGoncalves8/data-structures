@@ -25,7 +25,7 @@ alloc_node();
 p_dist
 alloc_dist();
 
-/* Cria lista ligada vazia. */
+/* Cria dist vazia. */
 p_dist
 new_dist();
 
