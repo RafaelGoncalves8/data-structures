@@ -178,7 +178,6 @@ add_dist(p_dist d1, p_dist d2)
   free(q);
 
   d1 = destroy_dist(d1);
-  free(d1);
 
   return ans;
 }
@@ -215,8 +214,7 @@ destroy_dist(p_dist dist)
     p = next_p;
   }
 
-  dist->head = NULL;
-  dist->tail = NULL;
+  free(dist);
 
-  return dist;
+  return NULL;
 }

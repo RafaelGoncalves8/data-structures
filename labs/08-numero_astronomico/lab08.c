@@ -19,13 +19,12 @@ main()
   p_dist dist;     /* Acumulador, guarda a soma das distancias. */
   p_dist tmp_dist; /* Guarda temporariamente cada distancia a ser somada. */
 
-  /* Inicializacao. */
   dist = new_dist();
-  tmp_dist = new_dist();
 
   scanf(" %c", &c);
   while (c == '+')
   {
+    tmp_dist = new_dist();
     /* Ignora zeros à esquerda. */
     scanf(" %c", &c);
     while (c == '0')
@@ -45,8 +44,6 @@ main()
 
   /* Libera memoria alocada dinamicamente. */
   dist = destroy_dist(dist);
-  free(dist);
-  free(tmp_dist);
 
   return 0;
 }
