@@ -22,6 +22,7 @@ main()
   dist = new_dist();
 
   scanf(" %c", &c);
+  /* Enquanti ha numeros para serem somados. */
   while (c == '+')
   {
     tmp_dist = new_dist();
@@ -30,7 +31,7 @@ main()
     while (c == '0')
       scanf(" %c", &c);
 
-    /* Armazena em new_dist cada distancia a ser somada. */
+    /* Armazena em new_dist cada digito da distancia a ser somada. */
     while (c != '+' && c != '#') 
     {
       tmp_dist = add_tail_dist(tmp_dist, c);
@@ -42,7 +43,7 @@ main()
     print_dist(dist);                  /* Imprime numero no acumulador. */
   }
 
-  /* Libera memoria alocada dinamicamente. */
+  /* Destroi acumulador (libera memoria alocada dinamicamente). */
   dist = destroy_dist(dist);
 
   return 0;

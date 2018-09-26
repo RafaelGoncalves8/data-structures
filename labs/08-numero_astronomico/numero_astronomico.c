@@ -53,7 +53,7 @@ new_dist()
 p_dist
 add_tail_dist(p_dist dist, char c)
 {
-  p_node new; 
+  p_node new;
 
   new = alloc_node();
   new->val = c;
@@ -113,7 +113,6 @@ add_dist(p_dist d1, p_dist d2)
   p = d1->tail;
   q = d2->tail;
 
-  ans = alloc_dist();
   ans = new_dist();
 
   overflow = 0;
