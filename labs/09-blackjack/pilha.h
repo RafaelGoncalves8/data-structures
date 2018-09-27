@@ -1,32 +1,35 @@
+#ifndef pilha_h
+#define pilha_h
+
 #define MAX_CHAR 3
 
-typedef struct NodeStruct 
+typedef struct StackNodeStruct 
 {
-  struct NodeStruct * next;
-  char val[MAX_CHAR];
+  struct StackNodeStruct * next;
+  int val;
 }
-Node;
+StackNode;
 
-typedef Node * p_node;
+typedef StackNode * p_stack;
 
 /* Aloca memoria dinamicamente e cria uma pilha vazia. */
-p_node
+p_stack
 new_stack();
 
 /* Destoi a pilha e libera memoria alocada dinamicamente. */
-p_node
-destroy_stack(p_node stack);
+p_stack
+destroy_stack(p_stack stack);
 
 /* Insere elemento no topo da pilha. */
 void
-push(p_node stack);
+push(p_stack stack, int c);
 
 /* Remove elemento do topo da pilha e retorna o valor do mesmo. */
-char *
-pop(p_node stack);
+int
+pop(p_stack stack);
 
 /* Retorna o valor do elemento no topo da pilha. */
-char *
-top(p_node stack);
+int
+top(p_stack stack);
 
-
+#endif
