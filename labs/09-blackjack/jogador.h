@@ -1,6 +1,9 @@
 #ifndef jogador_h
 #define jogador_h
 
+#define NUM_ERR_OUT_OF_MEM -1
+#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
+
 typedef struct PlayerStruct
 {
   int sum_others; /* Soma das cartas que nao sao as. */
@@ -22,5 +25,8 @@ alloc_player();
 
 p_player
 new_player();
+
+void
+destroy_player(p_player player);
 
 #endif

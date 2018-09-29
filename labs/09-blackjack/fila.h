@@ -6,6 +6,8 @@
 #define NUM_ERR_OUT_OF_MEM -1
 #define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
 
+#define DUMMY NULL
+
 /* Fila circular. */
 typedef struct QueueNodeStruct 
 {
@@ -38,6 +40,6 @@ dequeue(p_queue queue);
 
 /* Retorna o valor do elemento no topo da fila. */
 p_player
-top(p_queue queue);
+first(p_queue queue);
 
 #endif

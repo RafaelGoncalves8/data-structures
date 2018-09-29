@@ -31,16 +31,17 @@ int
 main()
 {
   p_stack deck;     /* Baralho de cartas. */
-  p_queue players;  /* Jogadores que ainda estao no jogo. */
-  p_queue current;  /* Ponteiro que aponta para o jogador atual. */
+  p_queue current;  /* Ponteiro para o jogador atual. */
+  p_queue players;  /* Jogadores. */
   int m, n;         /* Numero de cartas m e de jogadores n. */
   char s[MAX_CHAR]; /* Carta do baralho lida. */
   int card;         /* int representando uma carta do baralho. */
+  int i;            /* Variavel indexadora para os lacos. */
 
   deck = new_stack();
   players = new_queue();
 
-  scanf("%d%d", m, n);
+  scanf("%d%d", &m, &n);
 
   /* Construcao do baralho. */
   for (i = 0; i < m; i++)
@@ -52,8 +53,8 @@ main()
     push(deck, card);
   }
 
+  current = players->next->next;
   /* Acoes dos jogadores. */
-  current = players;
   scanf("%s", s);
   while (strcmp(s, "#"))
   {
@@ -70,7 +71,7 @@ main()
     {
       players->val->is_playing = 0;
     }
-    else /* c eh uma carta. */
+    else /* s eh uma carta. */
     {
       card = string_to_card(s);
 
@@ -79,26 +80,26 @@ main()
 
     do
       current = current->next;
-    while (!current->val->is_playing)
+    while (!current->val->is_playing);
 
-    scanf("%c", c);
+    scanf("%s", s);
   }
 
   /* Imprimir scores. */
   if (players != NULL) /* Fila nao esta vazia. */
   {
-    current = players;
+    current = players->next->next;
     do
     {
       printf("%d\n", get_score(current->val));
       current = current->next;
     }
-    while (current != players)
+    while (current->val != DUMMY);
   }
 
   /* Destruir estruturas (liberar memoria alocada dinamicamente). */
-  deck = destroy_stack(deck);
-  players = destroy_queue(players);
+  destroy_stack(deck);
+  destroy_queue(players);
 
   return 0;
 }

@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define DUMMY NULL
-
 /* Aloca memoria para uma fila e checa se malloc teve sucesso. */
 p_queue
 alloc_queue()
@@ -46,7 +44,7 @@ destroy_queue(p_queue queue)
   {
     tmp = p;
     p = p->next;
-    free(tmp->val);
+    destroy_player(tmp->val);
     free(tmp);
   }
 
@@ -77,6 +75,7 @@ dequeue(p_queue queue)
   tmp = queue->next->next;
   queue->next->next = queue->next->next->next;
   ans = tmp->val;
+  destroy_player(tmp->val);
   free(tmp);
 
   return ans;
@@ -84,7 +83,7 @@ dequeue(p_queue queue)
 
 /* Retorna o valor do elemento no topo da fila. */
 p_player
-top(p_queue queue)
+first(p_queue queue)
 {
   return queue->next->next->val;
 }
