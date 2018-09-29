@@ -17,4 +17,10 @@ get_score(p_player player);
 void
 add_card(p_player player, int card);
 
+p_player
+alloc_player();
+
+p_player
+new_player();
+
 #endif

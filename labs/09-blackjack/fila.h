@@ -3,6 +3,9 @@
 
 #include "jogador.h"
 
+#define NUM_ERR_OUT_OF_MEM -1
+#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
+
 /* Fila circular. */
 typedef struct QueueNodeStruct 
 {
@@ -13,24 +16,28 @@ QueueNode;
 
 typedef QueueNode * p_queue;
 
-/* Aloca memoria dinamicamente e cria uma fila vazia. */
+/* Aloca memoria para uma fila e checa se malloc teve sucesso. */
+p_queue
+alloc_queue();
+
+/* Cria uma fila vazia (apenas no dummy). */
 p_queue
 new_queue();
 
 /* Destoi a fila e libera memoria alocada dinamicamente. */
-p_queue
+void
 destroy_queue(p_queue queue);
 
 /* Insere elemento no topo da fila. */
-void
-enqueue(p_queue queue);
+p_queue
+enqueue(p_queue queue, p_player p);
 
 /* Remove elemento do topo da fila e retorna o valor do mesmo. */
-char
+p_player
 dequeue(p_queue queue);
 
 /* Retorna o valor do elemento no topo da fila. */
-char
+p_player
 top(p_queue queue);
 
 #endif

@@ -3,7 +3,10 @@
 
 #define MAX_CHAR 3
 
-typedef struct StackNodeStruct 
+#define NUM_ERR_OUT_OF_MEM -1
+#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
+
+typedef struct StackNodeStruct
 {
   struct StackNodeStruct * next;
   int val;
@@ -17,7 +20,7 @@ p_stack
 new_stack();
 
 /* Destoi a pilha e libera memoria alocada dinamicamente. */
-p_stack
+void
 destroy_stack(p_stack stack);
 
 /* Insere elemento no topo da pilha. */

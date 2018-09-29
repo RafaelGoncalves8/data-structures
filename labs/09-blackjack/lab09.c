@@ -30,12 +30,12 @@ string_to_card(char * s)
 int
 main()
 {
-  p_stack deck;        /* Baralho de cartas. */
-  p_queue players;     /* Jogadores que ainda estao no jogo. */
-  p_queue current;     /* Ponteiro que aponta para o jogador atual. */
-  int m, n;            /* Numero de cartas m e de jogadores n. */
-  char s[MAX_CHAR];    /* Carta do baralho lida. */
-  int card;            /* int representando uma carta do baralho. */
+  p_stack deck;     /* Baralho de cartas. */
+  p_queue players;  /* Jogadores que ainda estao no jogo. */
+  p_queue current;  /* Ponteiro que aponta para o jogador atual. */
+  int m, n;         /* Numero de cartas m e de jogadores n. */
+  char s[MAX_CHAR]; /* Carta do baralho lida. */
+  int card;         /* int representando uma carta do baralho. */
 
   deck = new_stack();
   players = new_queue();
@@ -62,7 +62,7 @@ main()
     if (!strcmp(s, "H"))
     {
       if (card == 1)
-        current->val->n_aces += 1;
+        current->val->n_aces++;
       else
         current->val->sum_others += card;
     }
