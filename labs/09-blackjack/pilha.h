@@ -24,7 +24,7 @@ void
 destroy_stack(p_stack stack);
 
 /* Insere elemento no topo da pilha. */
-void
+p_stack
 push(p_stack stack, int c);
 
 /* Remove elemento do topo da pilha e retorna o valor do mesmo. */

@@ -31,6 +31,7 @@ int
 main()
 {
   p_stack deck;     /* Baralho de cartas. */
+  p_player tmp;     /* Variavel para criacao da fila de jogadores. */
   p_queue current;  /* Ponteiro para o jogador atual. */
   p_queue players;  /* Jogadores. */
   int m, n;         /* Numero de cartas m e de jogadores n. */
@@ -51,6 +52,12 @@ main()
     card = string_to_card(s);
 
     push(deck, card);
+  }
+
+  for (i = 0; i < n; i++)
+  {
+    tmp = new_player();
+    players = enqueue(players, tmp);
   }
 
   current = players->next->next;

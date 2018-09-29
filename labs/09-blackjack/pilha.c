@@ -26,7 +26,7 @@ new_stack()
 }
 
 /* Insere elemento no topo da pilha. */
-void
+p_stack
 push(p_stack stack, int c)
 {
   p_stack new;
@@ -34,7 +34,8 @@ push(p_stack stack, int c)
   new = alloc_stack();
   new->val = c;
   new->next = stack;
-  stack = new;
+
+  return new;
 }
 
 /* Remove elemento do topo da pilha e retorna o valor do mesmo. */
