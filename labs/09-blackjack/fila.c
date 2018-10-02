@@ -3,13 +3,28 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+p_queue_node
+alloc_queue_node()
+{
+  p_queue_node queue_node;
+
+  queue_node = (p_queue_node) malloc(sizeof(QueueNode));
+  if (queue_node == NULL)
+  {
+    printf(STR_ERR_OUT_OF_MEM);
+    exit(NUM_ERR_OUT_OF_MEM);
+  }
+
+  return queue_node;
+}
+
 /* Aloca memoria para uma fila e checa se malloc teve sucesso. */
 p_queue
 alloc_queue()
 {
   p_queue queue;
 
-  queue = (p_queue) malloc(sizeof(QueueNode));
+  queue = (p_queue) malloc(sizeof(Queue));
   if (queue == NULL)
   {
     printf(STR_ERR_OUT_OF_MEM);
@@ -23,22 +38,27 @@ alloc_queue()
 p_queue
 new_queue()
 {
-  p_queue dummy;
+  p_queue_node dummy;
+  p_queue queue;
 
-  dummy = alloc_queue();
+  queue = alloc_queue();
+
+  dummy = alloc_queue_node();
   dummy->val = DUMMY;
   dummy->next = dummy;
 
-  return dummy;
+  queue->tail = dummy;
+
+  return queue;
 }
 
 /* Destoi a fila e libera memoria alocada dinamicamente. */
 void
 destroy_queue(p_queue queue)
 {
-  p_queue p, tmp;
+  p_queue_node p, tmp;
 
-  p = queue->next->next; /* Primeiro no depois do dummy. */
+  p = queue->tail->next->next; /* Primeiro no depois do dummy. */
 
   while (p->val != DUMMY)
   {
@@ -48,37 +68,33 @@ destroy_queue(p_queue queue)
     free(tmp);
   }
 
-  free(p);
+  free(queue);
 }
 
 /* Insere elemento no inicio da fila. */
-p_queue
+void
 enqueue(p_queue queue, p_player p)
 {
-  p_queue new;
+  p_queue_node new;
 
-  new = alloc_queue();
+  new = alloc_queue_node();
 
-  new->next = queue->next;
+  new->next = queue->tail->next;
   new->val = p;
-  queue->next = new;
-
-  return new;
+  queue->tail->next = new;
 }
 
 /* Remove elemento do fim da fila e retorna o valor do mesmo. */
 p_player
 dequeue(p_queue queue)
 {
-  p_queue tmp;
+  p_queue_node tmp;
   p_player ans;
 
-  /* TODO fails for one element case, maybe will have to change
-   * the data structure. */
-  if (queue->val != DUMMY)
+  if (queue->tail->val != DUMMY)
   {
-    tmp = queue->next->next;
-    queue->next->next = queue->next->next->next;
+    tmp = queue->tail->next->next;
+    queue->tail->next->next = queue->tail->next->next->next;
     ans = tmp->val;
     free(tmp);
   }
