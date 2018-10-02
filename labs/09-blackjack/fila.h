@@ -39,7 +39,7 @@ p_player
 dequeue(p_queue queue);
 
 /* Retorna o valor do elemento no topo da fila. */
-p_player
-first(p_queue queue);
+/* p_player */
+/* first(p_queue queue); */
 
 #endif

@@ -60,6 +60,7 @@ enqueue(p_queue queue, p_player p)
   new = alloc_queue();
 
   new->next = queue->next;
+  new->val = p;
   queue->next = new;
 
   return new;
@@ -72,18 +73,25 @@ dequeue(p_queue queue)
   p_queue tmp;
   p_player ans;
 
-  tmp = queue->next->next;
-  queue->next->next = queue->next->next->next;
-  ans = tmp->val;
-  destroy_player(tmp->val);
-  free(tmp);
+  if (queue->val != DUMMY)
+  {
+    tmp = queue->next->next;
+    queue->next->next = queue->next->next->next;
+    ans = tmp->val;
+    free(tmp);
+  }
+  else
+  {
+    ans = NULL;
+  }
 
   return ans;
 }
 
 /* Retorna o valor do elemento no topo da fila. */
-p_player
-first(p_queue queue)
-{
-  return queue->next->next->val;
-}
+/* p_player */
+/* first(p_queue queue) */
+/* { */
+/*   return queue->next->next->val; */
+/* } */
+

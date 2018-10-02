@@ -13,7 +13,15 @@ typedef struct StackNodeStruct
 }
 StackNode;
 
-typedef StackNode * p_stack;
+typedef StackNode * p_stack_node;
+
+typedef struct StackStruct
+{
+  p_stack_node top;
+}
+Stack;
+
+typedef Stack * p_stack;
 
 /* Aloca memoria dinamicamente e cria uma pilha vazia. */
 p_stack
@@ -24,7 +32,7 @@ void
 destroy_stack(p_stack stack);
 
 /* Insere elemento no topo da pilha. */
-p_stack
+void
 push(p_stack stack, int c);
 
 /* Remove elemento do topo da pilha e retorna o valor do mesmo. */

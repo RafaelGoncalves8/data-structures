@@ -69,10 +69,7 @@ main()
 
     if (!strcmp(s, "H"))
     {
-      if (card == 1)
-        current->val->n_aces++;
-      else
-        current->val->sum_others += card;
+      current->val = add_card(current->val, card);
     }
     else if (!strcmp(s, "S"))
     {
