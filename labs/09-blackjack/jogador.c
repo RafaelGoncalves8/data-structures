@@ -9,7 +9,7 @@ get_score(p_player player)
   int ans;
   ans = player->sum_others;
   n = player->n_aces;
-  while (player->n_aces)
+  while (n)
   {
     if (ans + 10 <= 21)
       ans += 10;
@@ -21,7 +21,7 @@ get_score(p_player player)
   return ans;
 }
 
-void
+p_player
 add_card(p_player player, int card)
 {
   if (card == 1)
@@ -31,6 +31,8 @@ add_card(p_player player, int card)
 
   if (get_score(player) >= 21)
     player->is_playing = 0;
+
+  return player;
 }
 
 p_player

@@ -17,7 +17,7 @@ typedef Player * p_player;
 int
 get_score(p_player player);
 
-void
+p_player
 add_card(p_player player, int card);
 
 p_player
