@@ -10,11 +10,11 @@ test_stack()
   s = new_stack();
   printf("New stack created.\n");
 
-  s = push(s, 2);
+  push(s, 2);
   printf("Pushed 2 onto stack.\n");
-  s = push(s, 5);
+  push(s, 5);
   printf("Pushed 5 onto stack.\n");
-  printf("Popped %d from stack.\n", pop(&s));
+  printf("Popped %d from stack.\n", pop(s));
   printf("Top of stack: %d\n", top(s));
 
   destroy_stack(s);
@@ -60,8 +60,10 @@ test_fila()
   printf("p1 dequeued.\n");
 
   destroy_player(p3);
+  printf("p1 destroyed.\n");
 
   destroy_queue(q);
+  printf("Queue destroyed.\n");
 }
 
 int
