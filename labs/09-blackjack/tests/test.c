@@ -49,6 +49,9 @@ test_fila()
   q = new_queue();
   printf("New queue created.\n");
 
+  if (q->val == NULL)
+    printf("Empty queue has val NULL.\n");
+
   p1 = test_jogador();
   p2 = test_jogador();
 
@@ -58,6 +61,10 @@ test_fila()
   printf("p2 enqueued.\n");
   p3 = dequeue(q);
   printf("p1 dequeued.\n");
+  destroy_player(dequeue(q));
+
+  if (q->val == NULL)
+    printf("Empty queue has val NULL.\n");
 
   destroy_player(p3);
   printf("p1 destroyed.\n");

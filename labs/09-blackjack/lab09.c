@@ -100,7 +100,7 @@ main()
   }
 
   /* Imprimir scores. */
-  while (players->val != DUMMY)
+  while (players->next->next->val != NULL)
   {
     tmp = dequeue(players);
     printf("%d\n", get_score(tmp));

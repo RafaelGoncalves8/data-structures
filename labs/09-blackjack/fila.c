@@ -73,6 +73,8 @@ dequeue(p_queue queue)
   p_queue tmp;
   p_player ans;
 
+  /* TODO fails for one element case, maybe will have to change
+   * the data structure. */
   if (queue->val != DUMMY)
   {
     tmp = queue->next->next;
