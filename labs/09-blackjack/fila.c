@@ -87,11 +87,3 @@ dequeue(p_queue queue)
 
   return ans;
 }
-
-/* Retorna o valor do elemento no topo da fila. */
-/* p_player */
-/* first(p_queue queue) */
-/* { */
-/*   return queue->next->next->val; */
-/* } */
-

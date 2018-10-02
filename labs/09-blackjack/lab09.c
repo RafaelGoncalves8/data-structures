@@ -67,13 +67,27 @@ main()
   {
     card = pop(deck);
 
+    /* Pula para o próximo jogador ainda no jogo. */
+    if (current->val == DUMMY)
+    {
+      current = current->next;
+    }
+    if (current->val != DUMMY)
+    {
+      do
+      {
+        current = current->next;
+      }
+      while (current->val == DUMMY || !(current->val->is_playing));
+    }
+
     if (!strcmp(s, "H"))
     {
       current->val = add_card(current->val, card);
     }
     else if (!strcmp(s, "S"))
     {
-      players->val->is_playing = 0;
+      current->val->is_playing = 0;
     }
     else /* s eh uma carta. */
     {
@@ -82,23 +96,15 @@ main()
       push(deck, card);
     }
 
-    do
-      current = current->next;
-    while (!current->val->is_playing);
-
     scanf("%s", s);
   }
 
   /* Imprimir scores. */
-  if (players != NULL) /* Fila nao esta vazia. */
+  while (players->val != DUMMY)
   {
-    current = players->next->next;
-    do
-    {
-      printf("%d\n", get_score(current->val));
-      current = current->next;
-    }
-    while (current->val != DUMMY);
+    tmp = dequeue(players);
+    printf("%d\n", get_score(tmp));
+    destroy_player(tmp);
   }
 
   /* Destruir estruturas (liberar memoria alocada dinamicamente). */

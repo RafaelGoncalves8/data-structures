@@ -21,9 +21,6 @@ p_player
 add_card(p_player player, int card);
 
 p_player
-alloc_player();
-
-p_player
 new_player();
 
 void
