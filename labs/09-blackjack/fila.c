@@ -81,7 +81,7 @@ enqueue(p_queue queue, p_player p)
 
   new->next = queue->tail->next;
   new->val = p;
-  queue->tail->next = new;
+  queue->tail = new;
 }
 
 /* Remove elemento do fim da fila e retorna o valor do mesmo. */

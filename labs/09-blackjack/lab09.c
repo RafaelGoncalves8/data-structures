@@ -32,7 +32,7 @@ main()
 {
   p_stack deck;     /* Baralho de cartas. */
   p_player tmp;     /* Variavel para criacao da fila de jogadores. */
-  p_queue current;  /* Ponteiro para o jogador atual. */
+  p_queue_node current;  /* Ponteiro para o jogador atual. */
   p_queue players;  /* Jogadores. */
   int m, n;         /* Numero de cartas m e de jogadores n. */
   char s[MAX_CHAR]; /* Carta do baralho lida. */
@@ -54,13 +54,25 @@ main()
     push(deck, card);
   }
 
-  for (i = 0; i < n; i++)
+  for (i = 0; i < n+1; i++)
   {
     tmp = new_player();
-    players = enqueue(players, tmp);
+    enqueue(players, tmp);
   }
 
-  current = players->next->next;
+  /* Adiciona-se 2 cartas para cada jogador. */
+  current = players->tail->next->next;
+  for (i = 0; i < 2; i++)
+  {
+    while (current->val != DUMMY)
+    {
+      card = pop(deck);
+      current->val = add_card(current->val, card);
+      current = current->next;
+    }
+  }
+
+  current = players->tail->next->next;
   /* Acoes dos jogadores. */
   scanf("%s", s);
   while (strcmp(s, "#"))
@@ -100,7 +112,7 @@ main()
   }
 
   /* Imprimir scores. */
-  while (players->next->next->val != NULL)
+  while (players->tail->next->next->val != DUMMY)
   {
     tmp = dequeue(players);
     printf("%d\n", get_score(tmp));

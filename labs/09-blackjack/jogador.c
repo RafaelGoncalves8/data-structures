@@ -11,8 +11,8 @@ get_score(p_player player)
   n = player->n_aces;
   while (n)
   {
-    if (ans + 10 <= 21)
-      ans += 10;
+    if (ans + 11 <= 21)
+      ans += 11;
     else
       ans += 1;
     n--;
