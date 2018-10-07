@@ -26,7 +26,7 @@ Queue;
 
 typedef Queue * p_queue;
 
-/* Cria uma fila vazia (apenas no dummy). */
+/* Cria uma fila vazia (apenas o no dummy). */
 p_queue
 new_queue();
 
@@ -42,6 +42,7 @@ enqueue(p_queue queue, p_player p);
 p_player
 dequeue(p_queue queue);
 
+/* Retorna o valor do primeiro no da fila. */
 p_player
 first(p_queue queue);
 

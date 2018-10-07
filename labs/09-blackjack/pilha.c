@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+ * Aloca dinamicamente espaco na memoria para o tipo StackNode e
+ * devolve um ponteiro para a regiao de memoria alocada.
+ */
 p_stack_node
 alloc_stack_node()
 {
@@ -17,6 +21,10 @@ alloc_stack_node()
   return stack_node;
 }
 
+/*
+ * Aloca dinamicamente espaco na memoria para o tipo Stack e
+ * devolve um ponteiro para a regiao de memoria alocada.
+ */
 p_stack
 alloc_stack()
 {
@@ -33,7 +41,7 @@ alloc_stack()
 }
 
 
-/* Aloca memoria dinamicamente e cria uma pilha vazia. */
+/* Cria uma pilha vazia. */
 p_stack
 new_stack()
 {

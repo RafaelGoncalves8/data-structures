@@ -1,8 +1,6 @@
 #ifndef pilha_h
 #define pilha_h
 
-#define MAX_CHAR 3
-
 #define NUM_ERR_OUT_OF_MEM -1
 #define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
 
@@ -23,13 +21,9 @@ Stack;
 
 typedef Stack * p_stack;
 
-/* Aloca memoria dinamicamente e cria uma pilha vazia. */
+/* Cria uma pilha vazia. */
 p_stack
 new_stack();
-
-/* Destoi a pilha e libera memoria alocada dinamicamente. */
-void
-destroy_stack(p_stack stack);
 
 /* Insere elemento no topo da pilha. */
 void
@@ -42,5 +36,9 @@ pop(p_stack stack);
 /* Retorna o valor do elemento no topo da pilha. */
 int
 top(p_stack stack);
+
+/* Destoi a pilha e libera memoria alocada dinamicamente. */
+void
+destroy_stack(p_stack stack);
 
 #endif

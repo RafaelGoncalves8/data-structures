@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/*
+ * Aloca dinamicamente espaco na memoria para o tipo QueueNode e
+ * devolve um ponteiro para a regiao de memoria alocada.
+ */
 p_queue_node
 alloc_queue_node()
 {
@@ -18,7 +22,10 @@ alloc_queue_node()
   return queue_node;
 }
 
-/* Aloca memoria para uma fila e checa se malloc teve sucesso. */
+/*
+ * Aloca dinamicamente espaco na memoria para o tipo Queue e
+ * devolve um ponteiro para a regiao de memoria alocada.
+ */
 p_queue
 alloc_queue()
 {
@@ -34,7 +41,7 @@ alloc_queue()
   return queue;
 }
 
-/* Cria uma fila vazia (apenas no dummy). */
+/* Cria uma fila vazia (apenas o no dummy). */
 p_queue
 new_queue()
 {
@@ -110,6 +117,7 @@ dequeue(p_queue queue)
   return ans;
 }
 
+/* Retorna o valor do primeiro no da fila. */
 p_player
 first(p_queue queue)
 {

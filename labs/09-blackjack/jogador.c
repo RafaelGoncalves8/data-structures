@@ -2,39 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int
-get_score(p_player player)
-{
-  int n;
-  int ans;
-  ans = player->sum_others;
-  n = player->n_aces;
-  while (n)
-  {
-    if ((ans + 11 + (n - 1)) <= 21)
-      ans += 11;
-    else
-      ans += 1;
-    n--;
-  }
-
-  return ans;
-}
-
-p_player
-add_card(p_player player, int card)
-{
-  if (card == 1)
-    player->n_aces++;
-  else
-    player->sum_others += card;
-
-  if (get_score(player) >= 21)
-    player->is_playing = 0;
-
-  return player;
-}
-
+/*
+ * Aloca dinamicamente espaco na memoria para o tipo Player e
+ * devolve um ponteiro para a regiao de memoria alocada.
+ */
 p_player
 alloc_player()
 {
@@ -50,6 +21,7 @@ alloc_player()
   return player;
 }
 
+/* Cria novo jogador sem cartas e jogando (is_playing = 1). */
 p_player
 new_player()
 {
@@ -63,6 +35,42 @@ new_player()
   return player;
 }
 
+/* Calcula e retorna a pontuacao do jogador player. */
+int
+get_score(p_player player)
+{
+  int n;
+  int ans;
+  ans = player->sum_others;
+  n = player->n_aces;
+  while (n)
+  {
+    n--;
+    if ((ans + 11 + n) <= 21)
+      ans += 11;
+    else
+      ans += 1;
+  }
+
+  return ans;
+}
+
+/* Adiciona carta card na mao do jogador player e devolve o mesmo. */
+p_player
+add_card(p_player player, int card)
+{
+  if (card == 1)
+    player->n_aces += 1;
+  else
+    player->sum_others += card;
+
+  if (get_score(player) >= 21)
+    player->is_playing = 0;
+
+  return player;
+}
+
+/* Libera memoria alocada dinamicamente para o jogador player. */
 void
 destroy_player(p_player player)
 {

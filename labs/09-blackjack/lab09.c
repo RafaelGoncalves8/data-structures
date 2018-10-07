@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Converte string s em int card para ser empilhado. */
+/* Converte a string s em um int card para ser empilhado. */
 int
 string_to_card(char * s)
 {
@@ -56,6 +56,7 @@ main()
     push(deck, card);
   }
 
+  /* Criar fila de jogadores. */
   for (i = 0; i < n+1; i++)
   {
     tmp = new_player();
@@ -74,8 +75,8 @@ main()
     }
   }
 
-  current = players->tail->next->next;
   /* Acoes dos jogadores. */
+  current = players->tail->next->next;
   scanf("%s", s);
   while (strcmp(s, "#") && current->val != DUMMY)
   {
@@ -98,10 +99,12 @@ main()
 
     scanf("%s", s);
 
+   /* Pular jogadores inativos e o no dummy. */
+    while (current->val != DUMMY && !(current->val->is_playing))
+      current = current->next;
     if (current->val == DUMMY)
       current = current->next;
-    while (current->val != DUMMY
-          && !(current->val->is_playing)) /* Pula jogadores inativos. */
+    while (current->val != DUMMY && !(current->val->is_playing))
       current = current->next;
 
   }

@@ -14,15 +14,19 @@ Player;
 
 typedef Player * p_player;
 
-int
-get_score(p_player player);
-
-p_player
-add_card(p_player player, int card);
-
+/* Cria novo jogador sem cartas e jogando (is_playing = 1). */
 p_player
 new_player();
 
+/* Calcula e retorna a pontuacao do jogador player. */
+int
+get_score(p_player player);
+
+/* Adiciona carta card na mao do jogador player e devolve o mesmo. */
+p_player
+add_card(p_player player, int card);
+
+/* Libera memoria alocada dinamicamente para o jogador player. */
 void
 destroy_player(p_player player);
 
