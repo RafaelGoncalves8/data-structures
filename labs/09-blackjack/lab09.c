@@ -9,10 +9,12 @@
 
 #include "fila.h"
 #include "pilha.h"
+#include "jogador.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+/* Converte string s em int card para ser empilhado. */
 int
 string_to_card(char * s)
 {
@@ -61,9 +63,9 @@ main()
   }
 
   /* Adiciona-se 2 cartas para cada jogador. */
-  current = players->tail->next->next;
   for (i = 0; i < 2; i++)
   {
+    current = players->tail->next->next;
     while (current->val != DUMMY)
     {
       card = pop(deck);
@@ -75,44 +77,37 @@ main()
   current = players->tail->next->next;
   /* Acoes dos jogadores. */
   scanf("%s", s);
-  while (strcmp(s, "#"))
+  while (strcmp(s, "#") && current->val != DUMMY)
   {
-    card = pop(deck);
-
-    /* Pula para o próximo jogador ainda no jogo. */
-    if (current->val == DUMMY)
-    {
-      current = current->next;
-    }
-    if (current->val != DUMMY)
-    {
-      do
-      {
-        current = current->next;
-      }
-      while (current->val == DUMMY || !(current->val->is_playing));
-    }
-
     if (!strcmp(s, "H"))
     {
+      card = pop(deck);
       current->val = add_card(current->val, card);
+      current = current->next;
     }
     else if (!strcmp(s, "S"))
     {
       current->val->is_playing = 0;
+      current = current->next;
     }
     else /* s eh uma carta. */
     {
       card = string_to_card(s);
-
       push(deck, card);
     }
 
     scanf("%s", s);
+
+    if (current->val == DUMMY)
+      current = current->next;
+    while (current->val != DUMMY
+          && !(current->val->is_playing)) /* Pula jogadores inativos. */
+      current = current->next;
+
   }
 
   /* Imprimir scores. */
-  while (players->tail->next->next->val != DUMMY)
+  while (first(players) != DUMMY)
   {
     tmp = dequeue(players);
     printf("%d\n", get_score(tmp));

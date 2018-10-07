@@ -38,8 +38,8 @@ alloc_queue()
 p_queue
 new_queue()
 {
-  p_queue_node dummy;
   p_queue queue;
+  p_queue_node dummy;
 
   queue = alloc_queue();
 
@@ -68,6 +68,7 @@ destroy_queue(p_queue queue)
     free(tmp);
   }
 
+  free(p);
   free(queue);
 }
 
@@ -81,6 +82,7 @@ enqueue(p_queue queue, p_player p)
 
   new->next = queue->tail->next;
   new->val = p;
+  queue->tail->next = new;
   queue->tail = new;
 }
 
@@ -96,6 +98,8 @@ dequeue(p_queue queue)
     tmp = queue->tail->next->next;
     queue->tail->next->next = queue->tail->next->next->next;
     ans = tmp->val;
+    if (queue->tail == tmp)
+      queue->tail = queue->tail->next;
     free(tmp);
   }
   else
@@ -104,4 +108,10 @@ dequeue(p_queue queue)
   }
 
   return ans;
+}
+
+p_player
+first(p_queue queue)
+{
+  return queue->tail->next->next->val;
 }
