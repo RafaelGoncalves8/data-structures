@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_CHAR 3
+
 /* Converte a string s em um int card para ser empilhado. */
 int
 string_to_card(char * s)
