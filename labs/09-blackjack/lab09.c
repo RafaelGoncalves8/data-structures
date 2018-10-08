@@ -34,14 +34,14 @@ string_to_card(char * s)
 int
 main()
 {
-  p_stack deck;     /* Baralho de cartas. */
-  p_player tmp;     /* Variavel para criacao da fila de jogadores. */
-  p_queue_node current;  /* Ponteiro para o jogador atual. */
-  p_queue players;  /* Jogadores. */
-  int m, n;         /* Numero de cartas m e de jogadores n. */
-  char s[MAX_CHAR]; /* Carta do baralho lida. */
-  int card;         /* int representando uma carta do baralho. */
-  int i;            /* Variavel indexadora para os lacos. */
+  p_stack deck; /* Baralho de cartas. */
+  p_player tmp; /* Variavel para criacao da fila de jogadores. */
+  p_queue_node current; /* Ponteiro para o jogador atual. */
+  p_queue players;      /* Jogadores. */
+  int m, n;             /* Numero de cartas m e de jogadores n. */
+  char s[MAX_CHAR];     /* Carta do baralho lida. */
+  int card;             /* int representando uma carta do baralho. */
+  int i;                /* Variavel indexadora para os lacos. */
 
   deck = new_stack();
   players = new_queue();
@@ -52,9 +52,7 @@ main()
   for (i = 0; i < m; i++)
   {
     scanf("%s ", s);
-
     card = string_to_card(s);
-
     push(deck, card);
   }
 
@@ -108,7 +106,6 @@ main()
       current = current->next;
     while (current->val != DUMMY && !(current->val->is_playing))
       current = current->next;
-
   }
 
   /* Imprimir scores. */
