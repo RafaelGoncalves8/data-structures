@@ -34,17 +34,18 @@ string_to_card(char * s)
 int
 main()
 {
-  p_stack deck; /* Baralho de cartas. */
-  p_player tmp; /* Variavel para criacao da fila de jogadores. */
-  p_queue_node current; /* Ponteiro para o jogador atual. */
-  p_queue players;      /* Jogadores. */
-  int m, n;             /* Numero de cartas m e de jogadores n. */
-  char s[MAX_CHAR];     /* Carta do baralho lida. */
-  int card;             /* int representando uma carta do baralho. */
-  int i;                /* Variavel indexadora para os lacos. */
+  p_stack deck;     /* Baralho de cartas. */
+  p_player tmp;     /* Variavel para criacao da fila de jogadores. */
+  p_queue playing;  /* Ponteiro para o jogador atual. */
+  p_queue players;  /* Jogadores. */
+  int m, n;         /* Numero de cartas m e de jogadores n. */
+  char s[MAX_CHAR]; /* Carta do baralho lida. */
+  int card;         /* int representando uma carta do baralho. */
+  int i;            /* Variavel indexadora para os lacos. */
 
   deck = new_stack();
   players = new_queue();
+  playing = new_queue();
 
   scanf("%d%d", &m, &n);
 
@@ -56,40 +57,33 @@ main()
     push(deck, card);
   }
 
-  /* Criar fila de jogadores. */
+  /* Criar fila de jogadores com 2 cartas cada. */
   for (i = 0; i < n+1; i++)
   {
-    tmp = new_player();
-    enqueue(players, tmp);
-  }
+    card = pop(deck);
 
-  /* Adiciona-se 2 cartas para cada jogador. */
-  for (i = 0; i < 2; i++)
-  {
-    current = players->tail->next->next;
-    while (current->val != DUMMY)
-    {
-      card = pop(deck);
-      current->val = add_card(current->val, card);
-      current = current->next;
-    }
+    tmp = new_player();
+    add_card(tmp, card);
+
+    enqueue(players, tmp);
+    enqueue(playing, tmp);
   }
 
   /* Acoes dos jogadores. */
-  current = players->tail->next->next;
   scanf("%s", s);
-  while (strcmp(s, "#") && current->val != DUMMY)
+  while (strcmp(s, "#"))
   {
     if (!strcmp(s, "H"))
     {
       card = pop(deck);
-      current->val = add_card(current->val, card);
-      current = current->next;
+
+      tmp = dequeue(playing);
+      add_card(tmp, card);
+      enqueue(playing, tmp);
     }
     else if (!strcmp(s, "S"))
     {
-      current->val->is_playing = 0;
-      current = current->next;
+      dequeue(playing);
     }
     else /* s eh uma carta. */
     {
@@ -98,14 +92,6 @@ main()
     }
 
     scanf("%s", s);
-
-   /* Pular jogadores inativos e o no dummy. */
-    while (current->val != DUMMY && !(current->val->is_playing))
-      current = current->next;
-    if (current->val == DUMMY)
-      current = current->next;
-    while (current->val != DUMMY && !(current->val->is_playing))
-      current = current->next;
   }
 
   /* Imprimir scores. */
