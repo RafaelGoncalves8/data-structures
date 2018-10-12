@@ -5,8 +5,9 @@
  * matematicas em sua forma mais simples.
  */
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 #define NUM_ERR_OUT_OF_MEM -1
 #define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
@@ -19,24 +20,11 @@
 #define VAR 1
 #define OP  2
 
-/*
- * Conteudo do no da arvore binaria. code pode ser NUM, VAR ou
- * OP. Em cada um destes casos o valor do no esta guardado,
- * respectivamente, em num, var ou op.
- */
-typedef struct ValStruct
-{
-  int code, num;
-  char var, op;
-}
-Val;
-
-typedef Val * p_val;
-
 /* Arvore binaria. */
 typedef struct NodeStruct
 {
-  p_val val;
+  char val[MAX];
+  int code;
   struct NodeStruct *right, *left;
 }
 Node;
@@ -67,22 +55,20 @@ create_node(char * s)
 
   node = alloc_node();
 
-  if (s[0] < 'z' && s[0] > 'a')
+  node->right = NULL;
+  node->left = NULL;
+
+  if ((s[0] <= 'z') && (s[0] >= 'a') && (s[1] == '\0'))
   {
-    node->val->code = VAR;
-    node->val->var = s[0];
+    node->code = VAR;
   }
   else if (s[0] == '+' || (s[0] == '-' && s[1] == '\0')
           || s[0] == '*' || s[0] == '/')
-  {
-    node->val->code = OP;
-    node->val->op = s[0];
-  }
+    node->code = OP;
   else
-  {
-    node->val->code = NUM;
-    node->val->num = atoi(s);
-  }
+    node->code = NUM;
+
+  strncpy(node->val, s, MAX);
 
   return node;
 }
@@ -91,8 +77,8 @@ create_node(char * s)
 p_node
 add_nodes(p_node a, p_node b, p_node c)
 {
-  a->right = b;
-  a->left = c;
+  a->left = b;
+  a->right = c;
 
   return a;
 }
@@ -101,36 +87,35 @@ add_nodes(p_node a, p_node b, p_node c)
 p_node
 read_expr()
 {
-  char c;
-  char s[MAX];
-  p_node n1, n2, op;
+  char c;      /* char lido de stdin. */
+  char s[MAX]; /* string para guardar numeros, operandos e variaveis. */
+  p_node n1, n2, op; /* Operandos n1, n2 e operador op. */
+  int i = 0;   /* Indice da string s. */
 
-  if ((c = getchar()) != '(')
+  if ((c = getchar()) == '(')
   {
-    ungetc(c, stdin);
-    scanf("%s ", s);
-    n1 = create_node(s);
-  }
-  else
-  {
+    getchar(); /* Espaço. */
     n1 = read_expr();
-  }
 
-  scanf("%s ", s);
-  op = create_node(s);
+    scanf("%s", s);
+    op = create_node(s);
 
-  if ((c = getchar()) != '(')
-  {
-    ungetc(c, stdin);
-    scanf("%s ", s);
-    n2 = create_node(s);
+    getchar(); /* Espaço. */
+    n2 = read_expr();
+
+    getchar(); /* ). */
+    getchar(); /* Espaço. */
+
+    op = add_nodes(op, n1, n2);
   }
   else
   {
-    n2 = read_expr();
+    s[i++] = c;
+    while ((c = getchar()) != ' ')
+      s[i++] = c;
+    s[i] = '\0';
+    op = create_node(s);
   }
-
-  op = add_nodes(op, n1, n2);
 
   return op;
 }
@@ -160,51 +145,6 @@ eval_expr(char op, int n1, int n2)
   return ans;
 }
 
-/* Simplifica a expressao e devolve a menor arvore possivel. */
-p_node
-simplify_expr(p_node expr)
-{
-  int val;
-
-  if (expr->right->val->code == OP)
-    expr->right = simplify_expr(expr->right);
-  if (expr->left->val->code == OP)
-    expr->left = simplify_expr(expr->left);
-  if (expr->right->val->code == NUM && expr->right->val->code == NUM)
-  {
-    val =  eval_expr(expr->val->op,
-                     expr->right->val->num, expr->left->val->num);
-    expr = create_node(itoa(val));
-  }
-
-  return expr;
-}
-
-/* Imprime uma expressao em estrutura de arvore. */
-void
-print_expr(p_node expr)
-{
-  if (expr->right != NULL)
-  {
-    printf("(");
-    print_expr(expr->right);
-    printf(" ");
-  }
-
-  if (expr->val->code == NUM)
-    printf("%d ", expr->val->num);
-  else if (expr->val->code == VAR)
-    printf("%c ", expr->val->var);
-  else
-    printf("%c ", expr->val->op);
-
-  if (expr->left != NULL)
-  {
-    print_expr(expr->left);
-    printf(")");
-  }
-}
-
 /* Destroi recursivamente a arvore liberando a memoria alocada para cada no. */
 void
 destroy_tree(p_node node)
@@ -223,11 +163,60 @@ destroy_tree(p_node node)
   }
 }
 
+/* Simplifica a expressao e devolve a menor arvore possivel. */
+p_node
+simplify_expr(p_node expr)
+{
+  int val;      /* Valor da expressao calculada. */
+  char s[MAX];  /* String correspondente a val. */
+  p_node tmp;   /* Guarda subarvore nao simplificada para liberar a memoria. */
+
+  if (expr->left->code == OP)
+    expr->left = simplify_expr(expr->left);
+  if (expr->right->code == OP)
+    expr->right = simplify_expr(expr->right);
+  if (expr->right->code == NUM && expr->left->code == NUM)
+  {
+    val =  eval_expr(expr->val[0], atoi(expr->left->val),
+                     atoi(expr->right->val));
+    sprintf(s, "%d", val);
+    tmp = expr;
+    expr = create_node(s);
+    destroy_tree(tmp);
+  }
+
+  return expr;
+}
+
+/* Imprime uma expressao em estrutura de arvore. */
+void
+print_expr(p_node expr)
+{
+  if (expr->left != NULL)
+  {
+    printf("( ");
+    print_expr(expr->left);
+  }
+
+  printf("%s ", expr->val);
+
+  if (expr->right != NULL)
+  {
+    print_expr(expr->right);
+    printf(") ");
+  }
+}
+
 int main()
 {
   p_node expr;
 
-  expr = read_expr(expr);
+  expr = read_expr();
+
+#if DEBUG
+  print_expr(expr);
+  printf("\n");
+#endif
 
   expr = simplify_expr(expr);
 
