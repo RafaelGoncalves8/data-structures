@@ -8,7 +8,6 @@ typedef struct PlayerStruct
 {
   int sum_others; /* Soma das cartas que nao sao as. */
   int n_aces;     /* Numero de cartas as. */
-  int is_playing; /* Flag que indica se jogador ainda recebera cartas. */
 }
 Player;
 

@@ -3,7 +3,7 @@
  * Rafael Gonçalves
  *
  * Objetivo: Simular uma partida de BlackJack utilizando uma
- * pilha para representar um baralho e uma fila para representar
+ * pilha para representar um baralho e filas para representar
  * os jogadores.
  */
 
@@ -36,8 +36,8 @@ main()
 {
   p_stack deck;     /* Baralho de cartas. */
   p_player tmp;     /* Variavel para criacao da fila de jogadores. */
-  p_queue playing;  /* Ponteiro para o jogador atual. */
-  p_queue players;  /* Jogadores. */
+  p_queue playing;  /* Fila de jogadores ativos. */
+  p_queue players;  /* Fila de todos os jogadores. */
   int m, n;         /* Numero de cartas m e de jogadores n. */
   char s[MAX_CHAR]; /* Carta do baralho lida. */
   int card;         /* int representando uma carta do baralho. */
@@ -57,16 +57,25 @@ main()
     push(deck, card);
   }
 
-  /* Criar fila de jogadores com 2 cartas cada. */
+  /* Criar fila de jogadores e fila de jogadores ativos. */
   for (i = 0; i < n+1; i++)
   {
-    card = pop(deck);
-
     tmp = new_player();
-    add_card(tmp, card);
 
     enqueue(players, tmp);
     enqueue(playing, tmp);
+  }
+
+  /* Cada jogador recebe 2 cartas. */
+  for (i = 0; i < (n+1)*2; i++)
+  {
+    card = pop(deck);
+
+    tmp = dequeue(playing);
+    add_card(tmp, card);
+
+    if (get_score(tmp) < 21)
+      enqueue(playing, tmp);
   }
 
   /* Acoes dos jogadores. */
@@ -76,10 +85,11 @@ main()
     if (!strcmp(s, "H"))
     {
       card = pop(deck);
-
       tmp = dequeue(playing);
       add_card(tmp, card);
-      enqueue(playing, tmp);
+
+      if (get_score(tmp) < 21)
+        enqueue(playing, tmp);
     }
     else if (!strcmp(s, "S"))
     {
@@ -95,7 +105,7 @@ main()
   }
 
   /* Imprimir scores. */
-  while (first(players) != DUMMY)
+  while (first(players) != DUMMY) /* Enquanto fila nao esta vazia. */
   {
     tmp = dequeue(players);
     printf("%d\n", get_score(tmp));
@@ -105,6 +115,7 @@ main()
   /* Destruir estruturas (liberar memoria alocada dinamicamente). */
   destroy_stack(deck);
   destroy_queue(players);
+  destroy_queue(playing);
 
   return 0;
 }

@@ -30,7 +30,6 @@ new_player()
   player = alloc_player();
   player->n_aces = 0;
   player->sum_others = 0;
-  player->is_playing = 1;
 
   return player;
 }
@@ -63,9 +62,6 @@ add_card(p_player player, int card)
     player->n_aces += 1;
   else
     player->sum_others += card;
-
-  if (get_score(player) >= 21)
-    player->is_playing = 0;
 
   return player;
 }
