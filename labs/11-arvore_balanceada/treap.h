@@ -7,13 +7,13 @@
 typedef struct TreapStruct
 {
     int key, priority;
-    struct TreapStruct *up, *right, *left;
+    struct TreapStruct *right, *left;
 }
 Treap;
 
 typedef Treap * p_treap;
 
-/* Cria estrutura de treap. */
+/* Cria estrutura de treap vazia. */
 p_treap
 create_treap();
 

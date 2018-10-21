@@ -8,24 +8,22 @@
 
 #include "treap.h"
 #include <stdio.h>
+#include <string.h>
 
 int
 main()
 {
-  p_treap A, B, S; /* Conjuntos A, B e solucao S. */
+  p_treap A, B, tmp; /* Conjuntos A, B e solucao S. */
   int e;    /* Elemento a ser inserido no conjunto. */
   int m, n; /* Numero m de elementos para cada um dos n conjuntos. */
   int i, j; /* Indexadores para os lacos. */
 
   scanf("%d", &n);
 
-  S = create_treap();
+  A = create_treap();
 
   for (i = 0; i < n; i++)
   {
-    A = S;
-    destroy_treap(S);
-
     B = create_treap();
     scanf("%d", &m);
 
@@ -35,15 +33,30 @@ main()
       B = insert_elem(B, e);
     }
 
-    S = diff(A, B);
+#if DEBUG
+    printf("A: ");
+    print_treap(A);
+    printf("\nB: ");
+    print_treap(B);
+    printf("\nS: ");
+#endif
+
+    tmp = A;
+    A = diff(A, B);
+
+    destroy_treap(tmp);
+    destroy_treap(B);
+
+#if DEBUG
+    print_treap(A);
+    printf("\n");
+#endif
   }
 
-  print_treap(S);
+  print_treap(A);
   printf("\n");
 
   destroy_treap(A);
-  destroy_treap(B);
-  destroy_treap(S);
 
   return 0;
 }

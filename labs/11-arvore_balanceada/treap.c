@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* Aloca memoria para o tipo Treap e checa se foi alocado com sucesso. */
 p_treap
 alloc_node()
 {
@@ -17,7 +18,7 @@ alloc_node()
   return node;
 }
 
-/* Cria estrutura de treap. */
+/* Cria estrutura de treap vazia. */
 p_treap
 create_treap()
 {
@@ -58,7 +59,7 @@ insert_elem(p_treap t, int n)
 
     new->key = n;
     new->priority = rand();
-    new->right = new->left = new->up = NULL;
+    new->right = new->left = NULL;
 
     return new;
   }
@@ -67,17 +68,11 @@ insert_elem(p_treap t, int n)
   else
     t->right = insert_elem(t->right, n);
 
-  /* Corrigir o campo up do novo no. */
-  if (t->right != NULL && t->right->up == NULL)
-    t->right->up = t;
-  else if (t->left != NULL && t->left->up == NULL)
-    t->left->up = t;
-
   /* Balancear treap. */
-  if (t->left != NULL && t->left->priority > t->priority)
-    cw_rot(t);
-  else if (t->right != NULL && t->right->priority > t->priority)
-    ccw_rot(t);
+  if (t->left != NULL && (t->left->priority > t->priority))
+    t = cw_rot(t);
+  else if (t->right != NULL && (t->right->priority > t->priority))
+    t = ccw_rot(t);
 
   return t;
 }
@@ -88,7 +83,10 @@ is_in(int e, p_treap A)
 {
   if (A == NULL)
     return 0;
-  return ((e == A->key) || is_in(e, A->left) || is_in(e, A->right));
+  else if (A->key >= e)
+    return (A->key == e || is_in(e, A->left));
+  else
+    return (is_in(e, A->right));
 }
 
 /* Armazena em S os elementos de A que nao estao em B. */
@@ -126,13 +124,13 @@ print_treap(p_treap t)
 {
   if (t != NULL)
   {
-    if (t->left != NULL)
-      print_treap(t->left);
+    if (t->right != NULL)
+      print_treap(t->right);
 
     printf("%d ", t->key);
 
-    if (t->right != NULL)
-      print_treap(t->right);
+    if (t->left != NULL)
+      print_treap(t->left);
   }
 }
 
