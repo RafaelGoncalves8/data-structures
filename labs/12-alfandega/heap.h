@@ -11,30 +11,28 @@
 typedef struct elem
 {
     char * name;
-    int weight;
-    int len;
+    int key;
 } Elem;
-
-typedef Elem * p_elem;
 
 /*
  * Estrutura com dois vetores (max-heap e min-heap) para calculo da mediana.
  */
 typedef struct max_min_heap
 {
-    p_elem max, min;
+    Elem *max, *min;
     int max_n, min_n;
+    int len;
 } MaxMinHeap;
 
 typedef MaxMinHeap * p_max_min_heap;
 
 /* Cria elemento com nome n e peso w. */
-p_elem
-create_elem(n, w);
+Elem
+create_elem(char * n, int w);
 
 /* Cria estrutura max_min_heap vazia. */
 p_max_min_heap
-create_heaps(n);
+create_heaps(int n);
 
 /* Cria o elemento (name, w) e adiciona em um dos heaps na estrutura h. */
 p_max_min_heap
@@ -50,10 +48,6 @@ balance_heaps(p_max_min_heap h);
 /* Imprime o elemento ou os elementos que sao a mediana do conjunto. */
 void
 print_median(p_max_min_heap h);
-
-/* Destroi elemento liberando a memoria. */
-void
-destroy_elem(p_elem e);
 
 /* Destroi a estrutura e seus elementos liberando a memoria. */
 void

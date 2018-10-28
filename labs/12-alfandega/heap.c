@@ -3,12 +3,12 @@
 #include <stdio.h>
 
 /* Checa se ha memoria e aloca memoria para a estrutura do tipo Elem. */
-p_elem
-alloc_elem()
+Elem *
+alloc_elem(n)
 {
-  p_elem elem;
+  Elem * elem;
 
-  elem = (p_elem) malloc(sizeof(Elem));
+  elem = (Elem *) malloc(n * sizeof(Elem));
   if (elem == NULL)
   {
     printf(STR_ERR_OUT_OF_MEM);
@@ -35,29 +35,33 @@ alloc_heap()
 }
 
 /* Cria elemento com nome n e peso w. */
-p_elem
-create_elem(n, w)
+Elem
+create_elem(char * n, int w)
 {
-  p_elem e;
+  Elem e;
 
-  e = alloc_elem();
-  e->name = n;
-  e->weight = w;
+  e.name = n;
+  e.key = w;
 
   return e;
 }
 
 /* Cria estrutura max_min_heap vazia. */
 p_max_min_heap
-create_heaps(n)
+create_heaps(int n)
 {
   p_max_min_heap h;
-  int len = (n/2) + 1; /* Tamanho maximo de cada heap. */
-  Elem max[len], min[len];
+  Elem *max, *min;
+  int len;
+
+  len  = (n/2) + 1; /* Tamanho maximo de cada heap. */
+
+  max = alloc_elem(len);
+  min = alloc_elem(len);
 
   h = alloc_heap();
 
-  h->max_h = h->min_h = 0;
+  h->max_n = h->min_n = 0;
   h->max = max;
   h->min = min;
   h->len = len;
@@ -66,10 +70,10 @@ create_heaps(n)
 }
 
 /* Troca elementos entre si. */
-p_elem
-swap(p_elem e, a, b)
+Elem *
+swap(Elem * e, int a, int b)
 {
-  p_elem tmp;
+  Elem tmp;
 
   tmp = e[a];
   e[a] = e[b];
@@ -79,24 +83,24 @@ swap(p_elem e, a, b)
 }
 
 /* Balanceia min para que mantenha a propriedade de min-heap. */
-p_elem
-sift_up(p_elem min, n)
+Elem *
+sift_up(Elem * min, int n)
 {
-  if (n > 0 && max[FAT(n)]->w > max[n]->w) 
+  if (n > 0 && min[FAT(n)].key > min[n].key) 
   {
-    max =  swap(max, max[FAT(n)], max[n]);
-    return sift_up(max, FAT(n));
+    min =  swap(min, FAT(n), n);
+    return sift_up(min, FAT(n));
   }
-  return max;
+  return min;
 }
 
 /* Balanceia max para que mantenha a propriedade de max-heap. */
-p_elem
-heapify(p_elem max, n)
+Elem *
+heapify(Elem * max, int n)
 {
-  if (n > 0 && max[FAT(n)]->w < max[n]->w) 
+  if (n > 0 && max[FAT(n)].key < max[n].key) 
   {
-    max =  swap(max, max[FAT(n)], max[n]);
+    max =  swap(max, FAT(n), n);
     return heapify(max, FAT(n));
   }
   return max;
@@ -106,7 +110,7 @@ heapify(p_elem max, n)
 p_max_min_heap
 add_to_heaps(char * name, int w, p_max_min_heap h)
 {
-  p_elem e;
+  Elem e;
 
   e = create_elem(name, w);
 
@@ -114,7 +118,7 @@ add_to_heaps(char * name, int w, p_max_min_heap h)
    * Se min vazio ou w eh maior que raiz de min,
    * adiciona e em min.
    */
-  if (!h->min_n || w >= h->min[0]->weight)
+  if (!h->min_n || w >= h->min[0].key)
   {
     h->min[h->min_n] = e;
     h->min++;
@@ -124,7 +128,7 @@ add_to_heaps(char * name, int w, p_max_min_heap h)
    * Se max vazio ou w eh menor que raiz de max,
    * adiciona e em max.
    */
-  else if (!h->max_n || w <= h->max[0]->weight)
+  else if (!h->max_n || w <= h->max[0].key)
   {
     h->max[h->max_n] = e;
     h->max++;
@@ -137,13 +141,17 @@ add_to_heaps(char * name, int w, p_max_min_heap h)
   else
   {
     if (h->min_n > h->max_n)
+    {
       h->max[h->max_n] = e;
       h->max++;
       h->max = heapify(h->max, h->max_n);
+    }
     else
+    {
       h->min[h->max_n] = e;
       h->min++;
       h->min = sift_up(h->min, h->min_n);
+    }
   }
 
   return h;
@@ -156,17 +164,17 @@ add_to_heaps(char * name, int w, p_max_min_heap h)
 p_max_min_heap
 balance_heaps(p_max_min_heap h)
 {
-  if(abs(h->min_h - h->max_h) > 1)
+  if(abs(h->min_n - h->max_n) > 1)
   {
-    if (h->min_h > h->max_h)
+    if (h->min_n > h->max_n)
     {
-      h->max[h->max_h] = h->min[h->min_h];
-      h->min_h--;
+      h->max[h->max_n] = h->min[h->min_n];
+      h->min_n--;
     }
     else
     {
-      h->min[h->min_h] = h->max[h->max_h];
-      h->max_h--;
+      h->min[h->min_n] = h->max[h->max_n];
+      h->max_n--;
     }
   }
 
@@ -178,12 +186,12 @@ void
 print_median(p_max_min_heap h)
 {
   /* Existe numero impar de elementos e imprime apenas mediana. */
-  if (abs(h->min_h - h->max_h) == 1)
+  if (abs(h->min_n - h->max_n) == 1)
   {
-    if (h->min_h > h->max_h)
-      printf("%s: %d\n", h->min[0]->name, h->min[0]->w);
+    if (h->min_n > h->max_n)
+      printf("%s: %d\n", (h->min)[0].name, (h->min)[0].key);
     else
-      printf("%s: %d\n", h->max[0]->name, h->max[0]->w);
+      printf("%s: %d\n", (h->max[0]).name, (h->max)[0].key);
   }
   /*
    * Existe numero par de elementos, serao imprimidos os dois 
@@ -191,33 +199,17 @@ print_median(p_max_min_heap h)
    */
   else
   {
-    printf("%s: %d\n", h->min[0]->name, h->min[0]->w);
-    printf("%s: %d\n", h->max[0]->name, h->max[0]->w);
+    printf("%s: %d\n", (h->min)[0].name, (h->min)[0].key);
+    printf("%s: %d\n", (h->max)[0].name, (h->max)[0].key);
   }
-}
-
-/* Destroi elemento liberando a memoria. */
-void
-destroy_elem(p_elem e)
-{
-  free(e);
 }
 
 /* Destroi a estrutura e seus elementos liberando a memoria. */
 void
 destroy_heaps(p_max_min_heap h)
 {
-  int i;
-
-  for (i = 0; i < h->max_h || i < h->min_h; i++)
-  {
-    if (i < max_h)
-      destroy_elem(max[i]);
-    if (i < min_h)
-      destroy_elem(min[i]);
-  }
-  free(max);
-  free(min);
+  free(h->max);
+  free(h->min);
   free(h);
 }
 

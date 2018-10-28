@@ -15,11 +15,16 @@ main()
 
   scanf("%d", &n);
 
+  heaps = create_heaps(n);
+
   for (i = 0; i < n; i++)
   {
-    scanf("%s %d", name, &w);
+    scanf(" %s %d", name, &w);
 
     add_to_heaps(name, w, heaps);
+#if DEBUG
+    print_median(heaps);
+#endif
     balance_heaps(heaps);
     print_median(heaps);
   }
