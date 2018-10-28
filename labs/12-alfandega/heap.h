@@ -4,30 +4,35 @@
 #define NUM_ERR_OUT_OF_MEM -1
 #define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
 
+/* Numero maximo de caracteres no nome. */
+#define MAX 20
+
 /* FAT(i) eh o indice do elemento pai do elemento i no heap. */
 #define FAT(i) ((i-1)/2)
 
 /* Cada elemento de entrada que contem nome e peso. */
 typedef struct elem
 {
-    char * name;
-    int key;
+  char name[MAX];
+  int key;
 } Elem;
+
+typedef Elem * p_elem;
 
 /*
  * Estrutura com dois vetores (max-heap e min-heap) para calculo da mediana.
  */
 typedef struct max_min_heap
 {
-    Elem *max, *min;
-    int max_n, min_n;
-    int len;
+  p_elem *max, *min;
+  int max_n, min_n;
+  int len;
 } MaxMinHeap;
 
 typedef MaxMinHeap * p_max_min_heap;
 
 /* Cria elemento com nome n e peso w. */
-Elem
+p_elem
 create_elem(char * n, int w);
 
 /* Cria estrutura max_min_heap vazia. */

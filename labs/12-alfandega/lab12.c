@@ -1,9 +1,6 @@
 #include "heap.h"
 #include <stdio.h>
 
-/* Numero maximo de caracteres no nome. */
-#define MAX 20
-
 int
 main()
 {
@@ -19,13 +16,10 @@ main()
 
   for (i = 0; i < n; i++)
   {
-    scanf(" %s %d", name, &w);
+    scanf("%s %d", name, &w);
 
-    add_to_heaps(name, w, heaps);
-#if DEBUG
-    print_median(heaps);
-#endif
-    balance_heaps(heaps);
+    heaps = add_to_heaps(name, w, heaps);
+    heaps = balance_heaps(heaps);
     print_median(heaps);
   }
 
