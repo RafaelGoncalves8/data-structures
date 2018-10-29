@@ -1,3 +1,11 @@
+/*
+ * Lab 12
+ * Rafael Goncalves
+ *
+ * Objetivo: Implementar o calculo dinamico da mediana atraves da implementacao
+ * de dois heaps (max-heap e min-heap). Tempo de execucao: O(logn).
+ */
+
 #include "heap.h"
 #include <stdio.h>
 
