@@ -47,15 +47,15 @@ hash_aux(char * key, int is_second)
   for (i = 0; i < strlen(key); i++)
     n = (256 * n + key[i]) % M;
 
-  n = 2*n;
+  n = 2*n; /* n par. */
 
   if (is_second)
-    n++;
+    n++;   /* n impar. */
 
   return n;
 }
 
-/* Funcao de hash. */
+/* Funcao de hashing duplo h. */
 int
 hash(p_hash h, char * key)
 {

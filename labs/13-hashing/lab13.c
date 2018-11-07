@@ -70,7 +70,10 @@ destroy_list(p_node n)
   }
 }
 
-/* Le a entrada para o ponteiro name e devolve 1 se a linha terminou com . */
+/*
+ * Le a entrada para o ponteiro name e devolve 1 se a linha terminou com .
+ * e 0 caso contrário.
+ */
 int
 read_name(char * name)
 {

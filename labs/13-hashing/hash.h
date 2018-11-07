@@ -1,7 +1,6 @@
 #ifndef hash_h
 #define hash_h
 
-
 #define NUM_ERR_OUT_OF_MEM -1
 #define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
 
