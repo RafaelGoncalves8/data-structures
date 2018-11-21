@@ -13,28 +13,21 @@ Node;
 
 typedef Node * p_node;
 
-typedef struct vertex
-{
-  int val;
-  p_node edges;
-}
-Vertex;
-
-typedef Vertex * p_vertex;
-
 typedef struct graph
 {
-  p_vertex * v;
+  p_node * v;
+  int * vals;
+  int n;
 }
 Graph;
 
 typedef Graph * p_graph;
 
 p_graph
-create_graph(int * v);
+create_graph(int * v, int n);
 
 void
-destroy_graph(p_graph p);
+destroy_graph(p_graph g);
 
 p_graph
 add_edge(p_graph g, int u, int v);

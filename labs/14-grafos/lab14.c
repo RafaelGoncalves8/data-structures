@@ -14,12 +14,6 @@
 #define NUM_ERR_OUT_OF_MEM -1
 #define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
 
-int
-M(int x)
-{
-  return ( (int) sum(x)/3);
-}
-
 int *
 alloc_vec(int n)
 {
@@ -35,31 +29,41 @@ alloc_vec(int n)
   return v;
 }
 
-
 int
 main()
 {
-  int i;      /* Indexador para vertices e arestas. */
-  int m, n;   /* Numero de pessoas n, numero de relacoes (arestas) m. */
-  int u, v;   /* Vertices u e v de cada aresta entre u e v. */
-  int *ages;  /* Vetor das idades das n pessoas do grafo. */
-  p_graph g;  /* Grafo f para representar as pessoas e as relacoes. */
+  int i;     /* Indexador para vertices e arestas. */
+  int m, n;  /* Numero de pessoas n, numero de relacoes (arestas) m. */
+  int u, v;  /* Vertices u e v de cada aresta entre u e v. */
+  int *ages; /* Vetor das idades das n pessoas do grafo. */
+  int num = 0; /* Numero de pessoas no vetor ages. */
+  p_graph g; /* Grafo f para representar as pessoas e as relacoes. */
 
   scanf("%d %d", &n, &m);
 
   ages = alloc_vec(n);
 
   for (i = 0; i < n; i++)
+  {
     scanf("%d", &ages[i]);
+    num++;
+  }
 
-  g = create_graph(ages);
-  free(ages);
+#if DEBUG
+  printf("Read ages.\n");
+#endif
+
+  g = create_graph(ages, num);
 
   for (i = 0; i < m; i++)
-  {
-    scanf("%d %d", u, v);
+ {
+    scanf("%d %d", &u, &v);
     g = add_edge(g, u, v);
   }
+
+#if DEBUG
+  printf("Created graph.\n");
+#endif
 
   print_bored(g);
 
