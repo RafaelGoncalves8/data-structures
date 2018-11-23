@@ -15,23 +15,31 @@ typedef Node * p_node;
 
 typedef struct graph
 {
-  p_node * v;
-  int * vals;
-  int n;
+  p_node * v; /* Lista de adjacencias. */
+  int * vals; /* Valores de idade de cada vertice. */
+  int n;      /* Numero de vertices no grafo. */
 }
 Graph;
 
 typedef Graph * p_graph;
 
+/* Aloca memoria dinamicamente para um vetor de n inteiros. */
+int *
+alloc_vec(int n);
+
+/* Cria grafo g com vetor de idades v de tamanho n. */
 p_graph
 create_graph(int * v, int n);
 
+/* Destroi estrutura de grafo g. */
 void
 destroy_graph(p_graph g);
 
+/* Adiciona aresta entre u e v. */
 p_graph
 add_edge(p_graph g, int u, int v);
 
+/* Imprime vertices em grupos entediados. */
 void
 print_bored(p_graph g);
 

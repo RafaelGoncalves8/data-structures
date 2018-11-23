@@ -11,24 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_ERR_OUT_OF_MEM -1
-#define STR_ERR_OUT_OF_MEM "Nao ha espaco na memoria.\n"
-
-int *
-alloc_vec(int n)
-{
-  int * v;
-
-  v = (int *) malloc(n * sizeof(int));
-  if (v == NULL)
-  {
-    printf(STR_ERR_OUT_OF_MEM);
-    exit(NUM_ERR_OUT_OF_MEM);
-  }
-
-  return v;
-}
-
 int
 main()
 {
@@ -65,8 +47,9 @@ main()
   printf("Created graph.\n");
 #endif
 
-  print_bored(g);
+  print_bored(g); 
 
+  free(ages);
   destroy_graph(g);
 
   return 0;

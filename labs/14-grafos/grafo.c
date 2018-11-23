@@ -2,18 +2,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int
-M(int * x, int n)
+/* Aloca memoria dinamicamente para um vetor de n inteiros. */
+int *
+alloc_vec(int n)
 {
-  float sum = 0;
-  int i;
+  int * v;
 
-  for (i = 0; i < n; i++)
-    sum += x[i];
+  v = (int *) malloc(n * sizeof(int));
+  if (v == NULL)
+  {
+    printf(STR_ERR_OUT_OF_MEM);
+    exit(NUM_ERR_OUT_OF_MEM);
+  }
 
-  return ( (int) sum/3);
+  return v;
 }
 
+/* Aloca memoria dinamicamente para no de lista ligada. */
 p_node
 alloc_node()
 {
@@ -29,6 +34,7 @@ alloc_node()
   return n;
 }
 
+/* Aloca memoria dinamicamente para vetor de listas ligadas de tamanho n. */
 p_node *
 alloc_vertex(int n)
 {
@@ -44,7 +50,7 @@ alloc_vertex(int n)
   return v;
 }
 
-
+/* Aloca memoria dinamicamente para a estrutura grafo. */
 p_graph
 alloc_graph()
 {
@@ -60,6 +66,7 @@ alloc_graph()
   return g;
 }
 
+/* Cria grafo g com vetor de idades v de tamanho n. */
 p_graph
 create_graph(int * v, int n)
 {
@@ -77,6 +84,7 @@ create_graph(int * v, int n)
   return g;
 }
 
+/* Destroi lista l. */
 void destroy_list(p_node l)
 {
   if (l != NULL)
@@ -86,6 +94,7 @@ void destroy_list(p_node l)
   }
 }
 
+/* Destroi estrutura de grafo g. */
 void
 destroy_graph(p_graph g)
 {
@@ -105,6 +114,7 @@ destroy_graph(p_graph g)
   }
 }
 
+/* Adiciona no em lista ligada. */
 p_node
 add_node(p_node l, int n)
 {
@@ -117,7 +127,7 @@ add_node(p_node l, int n)
   return new;
 }
 
-
+/* Adiciona aresta entre u e v. */
 p_graph
 add_edge(p_graph g, int u, int v)
 {
@@ -127,7 +137,48 @@ add_edge(p_graph g, int u, int v)
   return g;
 }
 
+/* Retorna 1 se o vertice n esta em grupo entediado, 0 caso contrario. */
+int
+is_bored(p_graph g, int n)
+{
+  float m;
+  int ans = 0;
+  p_node p, q, r;
+
+  /* Para cada amigo de n. */
+  for (p = g->v[n]; !ans && p != NULL; p = p->next)
+  {
+    /* Para cada amigo do amigo de n. */
+    for (q = g->v[p->val]; !ans && q != NULL; q = q->next)
+    {
+      /* Para cada amigo do amigo do amigo de n. */
+      for (r = g->v[q->val]; !ans && r != NULL; r = r->next)
+      {
+        /* Se eh um grupo. */
+        if (r->val == n)
+        {
+          /* Calcula m e compara com as idades. */
+          m = g->vals[p->val] + g->vals[q->val] + g->vals[n];
+          m = m/3;
+          if (2*g->vals[p->val] < m
+           || 2*g->vals[q->val] < m
+           || 2*g->vals[n] < m)
+            ans = 1; /* Esta num grupo entediado. */
+        }
+      }
+    }
+  }
+
+  return ans;
+}
+
+/* Imprime vertices em grupos entediados. */
 void
 print_bored(p_graph g)
 {
+  int i;
+
+  for (i = 0; i < g->n; i++)
+    if (is_bored(g, i))
+      printf("%d\n", i);
 }
