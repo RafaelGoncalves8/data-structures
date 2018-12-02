@@ -242,7 +242,7 @@ create_group(p_graph g, int * v, int n)
 
   for (i = 0; i < n - 1; i++)
     for (j = i + 1; j < n; j++)
-      g = add_edge(g, i, j);
+      g = add_edge(g, v[i], v[j]);
 
   return g;
 }
@@ -261,19 +261,18 @@ is_edge(p_graph g, int u, int v)
 
 /* Busca em largura. */
 int *
-bfs(p_graph g, int n)
+bfs(p_graph g, int n, int * deg)
 {
   int w, v;
   int * fat = alloc_vec(g->n);
-  int * deg = alloc_vec(g->n);
   int * visited = alloc_vec(g->n);
   p_queue q = new_queue();
 
   for (v = 0; v < g->n; v++)
   {
     fat[v] = -1;
-    deg[v] = -1;
     visited[v] = 0;
+    deg[v] = 0;
   }
 
   enqueue(q, n);
@@ -288,9 +287,7 @@ bfs(p_graph g, int n)
       if (is_edge(g, v, w) && !visited[w])
       {
         visited[w] = 1;
-        if (deg[w] < 0)
-          deg[w]++;
-        deg[w]++; /* ? */
+        deg[w] = deg[v] + 1;
         fat[w] = v;
         enqueue(q, w);
       }
@@ -299,7 +296,7 @@ bfs(p_graph g, int n)
   destroy_queue(q);
   free(visited);
 
-  return deg;
+  return fat;
 }
 
 /* Imprime elementos impossiveis de serem alcancados pelo vertice i. */
@@ -333,14 +330,16 @@ print_connections(p_graph g)
 {
   int i;
   int * aux;
+  int * deg = alloc_vec(g->n);
 
   for (i = 0; i < g->n; i++)
   {
-    aux = bfs(g, i);
+    aux = bfs(g, i, deg);
     print_unreachable(aux, g->n);
     printf("- ");
-    print_max(aux, g->n);
+    print_max(deg, g->n);
     printf("\n");
     free(aux);
   }
+  free(deg);
 }
