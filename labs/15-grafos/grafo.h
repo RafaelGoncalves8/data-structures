@@ -17,7 +17,7 @@ typedef Node * p_node;
 
 typedef struct queue
 {
-  p_node tail;
+  p_node tail, head;
 }
 Queue;
 

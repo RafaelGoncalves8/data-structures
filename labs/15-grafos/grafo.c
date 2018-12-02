@@ -85,20 +85,26 @@ alloc_queue()
   return queue;
 }
 
-/* Cria uma fila vazia (apenas o no dummy). */
+/* Destroi lista l. */
+void
+destroy_list(p_node l)
+{
+  if (l != NULL)
+  {
+    destroy_list(l->next);
+    free(l);
+  }
+}
+
+/* Cria uma fila vazia. */
 p_queue
 new_queue()
 {
   p_queue queue;
-  p_node dummy;
 
   queue = alloc_queue();
-
-  dummy = alloc_node();
-  dummy->val = DUMMY;
-  dummy->next = dummy;
-
-  queue->tail = dummy;
+  queue->tail = NULL;
+  queue->head = NULL;
 
   return queue;
 }
@@ -107,18 +113,8 @@ new_queue()
 void
 destroy_queue(p_queue queue)
 {
-  p_node p, tmp;
-
-  p = queue->tail->next->next; /* Primeiro no depois do dummy. */
-
-  while (p->val != DUMMY)
-  {
-    tmp = p;
-    p = p->next;
-    free(tmp);
-  }
-
-  free(p);
+  if (queue->tail != NULL)
+    destroy_list(queue->tail);
   free(queue);
 }
 
@@ -129,42 +125,35 @@ enqueue(p_queue queue, int n)
   p_node new;
 
   new = alloc_node();
-
-  new->next = queue->tail->next;
+  new->next = NULL;
   new->val = n;
-  queue->tail->next = new;
-  queue->tail = new;
+  if (queue->tail == NULL)
+    queue->tail = new;
+  else
+    queue->head->next = new;
+  queue->head = new;
 }
 
 /* Remove elemento do fim da fila e retorna o valor do mesmo. */
 int
 dequeue(p_queue queue)
 {
-  p_node tmp;
-  int ans;
+  p_node tmp = queue->tail;
+  int ans = tmp->val;
 
-  if (queue->tail->val != DUMMY)
-  {
-    tmp = queue->tail->next->next;
-    queue->tail->next->next = queue->tail->next->next->next;
-    ans = tmp->val;
-    if (queue->tail == tmp)
-      queue->tail = queue->tail->next;
-    free(tmp);
-  }
-  else
-  {
-    ans = DUMMY;
-  }
+  queue->tail = queue->tail->next;
+  if (queue->tail == NULL)
+    queue->head = NULL;
+  free(tmp);
 
   return ans;
 }
 
-/* Retorna o valor do primeiro no da fila. */
+/* Retorna 1 caso fila esteja vazia, 0 caso contrario. */
 int
 empty_queue(p_queue queue)
 {
-  return (queue->tail->val == DUMMY);
+  return (queue->tail == NULL);
 }
 
 /* Cria grafo g de tamanho n. */
@@ -182,16 +171,6 @@ create_graph(int n)
     g->v[i] = NULL;
 
   return g;
-}
-
-/* Destroi lista l. */
-void destroy_list(p_node l)
-{
-  if (l != NULL)
-  {
-    destroy_list(l->next);
-    free(l);
-  }
 }
 
 /* Destroi estrutura de grafo g. */
@@ -255,48 +234,39 @@ is_edge(p_graph g, int u, int v)
   p_node aux;
 
   for (aux = g->v[u]; aux != NULL && !ans; aux = aux->next)
-    ans = (ans || (aux->val == v));
+    ans = (aux->val == v);
   return ans;
 }
 
-/* Busca em largura. */
-int *
+/* Busca em largura, devolve vetor de graus de separacao no parametro deg. */
+void
 bfs(p_graph g, int n, int * deg)
 {
-  int w, v;
-  int * fat = alloc_vec(g->n);
-  int * visited = alloc_vec(g->n);
-  p_queue q = new_queue();
+  int v;
+  p_queue q = new_queue(); /* Fila. */
+  p_node p; /* Ponteiro auxiliar. */
 
   for (v = 0; v < g->n; v++)
   {
-    fat[v] = -1;
-    visited[v] = 0;
-    deg[v] = 0;
+    deg[v] = 0; /* deg[i] == 0 significa que nao ha conexao entre i e n. */
   }
 
   enqueue(q, n);
-  fat[n] = n;
-  visited[n] = 1;
-
   while(!empty_queue(q))
   {
     v = dequeue(q);
-    for (w = 0; w < g->n; w++)
+    for (p = g->v[v]; p != NULL; p = p->next)
     {
-      if (is_edge(g, v, w) && !visited[w])
+      if ((!deg[p->val] && p->val != n) && is_edge(g, v, p->val) )
       {
-        visited[w] = 1;
-        deg[w] = deg[v] + 1;
-        fat[w] = v;
-        enqueue(q, w);
+        deg[p->val] = deg[v] + 1;
+        enqueue(q, p->val);
       }
     }
   }
   destroy_queue(q);
-  free(visited);
 
-  return fat;
+  deg[n] = -1; /* Grau de conexao dele com ele mesmo. */
 }
 
 /* Imprime elementos impossiveis de serem alcancados pelo vertice i. */
@@ -306,7 +276,7 @@ print_unreachable(int * v, int n)
   int i;
 
   for (i = 0; i < n; i++)
-    if (v[i] == -1)
+    if (v[i] == 0)
       printf("%d ", i);
 }
 
@@ -329,17 +299,15 @@ void
 print_connections(p_graph g)
 {
   int i;
-  int * aux;
-  int * deg = alloc_vec(g->n);
+  int * aux = alloc_vec(g->n);
 
   for (i = 0; i < g->n; i++)
   {
-    aux = bfs(g, i, deg);
+    bfs(g, i, aux);
     print_unreachable(aux, g->n);
     printf("- ");
-    print_max(deg, g->n);
+    print_max(aux, g->n);
     printf("\n");
-    free(aux);
   }
-  free(deg);
+  free(aux);
 }

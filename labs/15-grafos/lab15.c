@@ -13,10 +13,10 @@ int
 main()
 {
   int i, j;
-  int m, n, k;
+  int m, n, k; /* m membros por grupo, n pessoas, k grupos. */
   int id;
-  int * v;
-  p_graph g;
+  int * v; /* Lista de membros por grupo. */
+  p_graph g; /* Grafo. */
 
   scanf("%d %d", &n, &k);
   g = create_graph(n);
@@ -33,8 +33,14 @@ main()
     g = create_group(g, v, m);
     free(v);
   }
+#if DEBUG
+  printf("created graph\n");
+#endif
 
   print_connections(g);
+#if DEBUG
+  printf("done bfs\n");
+#endif
 
   destroy_graph(g);
 
