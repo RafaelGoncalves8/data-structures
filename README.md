@@ -1,5 +1,5 @@
 # mc202
-Course on data structures at Unicamp.
+Course on data structures at Unicamp (2s/2018).
 
 ## Index
 
@@ -13,6 +13,18 @@ Course on data structures at Unicamp.
    1. Diferença simétrica
    2. Multiplicação de matrizes
    3. Calculadora de Strings
+   4. Tipo Abstrato de Dado (ADT)
+   5. Sorteio (struct)
+   6. Calculo de nota (parameter by reference)
+   7. Labirinto (backtracking)
+   8. Numero Astronomico (linked lists)
+   9. Blackjack (queue and stack)
+   10. Reduzir operações (tree)
+   11. Árvore balanceada (treap)
+   12. Calculo de mediana (heap)
+   13. Hashing
+   14. Grafos I
+   15. Grafos II (bfs)
 
 ## Usage
 
